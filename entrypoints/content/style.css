@@ -1,11 +1,7 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 
-* {
-  padding: 0;
-  margin: 0;
-}
-
-body {
-  background-color: black;
-  padding: 16px;
+html {
+  font-family: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
+    sans-serif;
 }

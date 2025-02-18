@@ -1,3 +1,4 @@
+import { Readability } from '@mozilla/readability';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './style.css';
@@ -8,25 +9,59 @@ export default defineContentScript({
 
   async main(ctx) {
     let ui: Awaited<ReturnType<typeof createShadowRootUi>>;
+    let originalStylesheets: HTMLStyleElement[] = [];
+
     const create = async () => {
+      originalStylesheets = [
+        ...Array.from(document.getElementsByTagName('style')),
+        ...Array.from(document.getElementsByTagName('link')).filter(
+          (link) => link.rel === 'stylesheet'
+        ),
+      ].map((element) => {
+        const clone = element.cloneNode(true) as
+          | HTMLStyleElement
+          | HTMLLinkElement;
+        element.remove();
+        return clone;
+      });
+
+      // parse() works by modifying the DOM.
+      const documentClone = document.cloneNode(true) as Document;
+      const article = new Readability(documentClone).parse();
+
+      document.body.style.display = 'none';
+      // await new Promise((resolve) => setTimeout(resolve, 300));
+
+      // const turndown = new TurndownService();
+      // console.log(article?.content)
+      // const markdown = turndown.turndown(article?.content ?? '');
       ui = await createShadowRootUi(ctx, {
-        name: 'react-example',
+        name: 'reader-mode',
         position: 'inline',
         anchor: 'body',
         append: 'before',
         onMount: (container) => {
-          document.body.style.display = 'none';
           // Don't mount react app directly on <body>
           const wrapper = document.createElement('div');
+          const root = ReactDOM.createRoot(wrapper);
+          root.render(
+            <App
+              html={article?.content}
+              title={article?.title}
+              author={article?.byline}
+            />
+          );
+
           container.append(wrapper);
 
-          const root = ReactDOM.createRoot(wrapper);
-          root.render(<App />);
           return { root, wrapper };
         },
         onRemove: (elements) => {
           elements?.root.unmount();
           elements?.wrapper.remove();
+          originalStylesheets.forEach((style) => {
+            document.head.appendChild(style);
+          });
           document.body.style.display = '';
         },
       });
