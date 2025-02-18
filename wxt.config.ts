@@ -4,4 +4,8 @@ import { defineConfig } from 'wxt';
 export default defineConfig({
   extensionApi: 'chrome',
   modules: ['@wxt-dev/module-react'],
+  manifest: {
+    permissions: ['activeTab', 'scripting'],
+    action: {}, // to allow us to trigger on click
+  },
 });
