@@ -20,7 +20,6 @@ export default function App({ html, title, author }: AppProps) {
       <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground'></div>
       <div className='max-w-2xl px-4'>
         <div className='flex items-center gap-1 mb-2'></div>
-
         <h1 className='tracking-tight text-3xl md:text-5xl mb-2 text-foreground'>
           {title}
         </h1>
@@ -34,7 +33,7 @@ export default function App({ html, title, author }: AppProps) {
           <section dangerouslySetInnerHTML={{ __html: html ?? '' }}></section>
         </article>
       </div>
-      <div className='fixed top-4 right-4 flex flex-col'>
+      <div className='fixed top-0 right-0 md:top-4 md:right-4 flex flex-col'>
         <ColorPaletteDropdownMenu />
         <HeadingDropdownMenu />
         <TextDropdownMenu />
@@ -44,7 +43,7 @@ export default function App({ html, title, author }: AppProps) {
       <a
         href={`https://archive.ph/timegate/${window.location.href}`}
         target='_blank'
-        className='fixed bottom-4 right-4'
+        className='fixed bottom-0 right-0 md:bottom-4 md:right-4'
       >
         <Button variant='ghost' size='icon'>
           <ArchiveIcon className='size-6' />
