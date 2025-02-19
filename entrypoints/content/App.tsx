@@ -3,7 +3,7 @@ import TextDropdownMenu from '@/components/text-dropdown-menu';
 import ColorPaletteDropdownMenu from '@/components/theme-dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { getCurrentPageFaviconUrl } from '@/lib/favicon';
-import { ArchiveIcon, ExternalLink } from 'lucide-react';
+import { ArchiveIcon } from 'lucide-react';
 
 type AppProps = {
   // markdown: string;

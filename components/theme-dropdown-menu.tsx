@@ -1,14 +1,17 @@
 import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
-import { COLOR_PALETTE_OPTIONS as COLOR_PALETTE_OPTIONS, ColorPalette } from '@/lib/theme';
+import {
+  COLOR_PALETTE_OPTIONS,
+  ColorPalette,
+} from '@/lib/theme';
 import { cn } from '@/lib/utils';
 import { PaintbrushIcon } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { useTheme } from '~/hooks/use-theme';
 
@@ -78,14 +81,16 @@ export default function ColorPaletteDropdownMenu() {
       >
         <DropdownMenuLabel className=''>Themes</DropdownMenuLabel>
 
-        {COLOR_PALETTE_OPTIONS.map((theme) => (
-          <ColorPaletteDropdownMenuItem
-            key={theme}
-            theme={theme}
-            onClick={() => setColorPaletteAttribute(theme)}
-            selected={currentColorPalette === theme}
-          />
-        ))}
+        <div className='flex flex-col h-96 overflow-y-auto'>
+          {COLOR_PALETTE_OPTIONS.map((theme) => (
+            <ColorPaletteDropdownMenuItem
+              key={theme}
+              theme={theme}
+              onClick={() => setColorPaletteAttribute(theme)}
+              selected={currentColorPalette === theme}
+            />
+          ))}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );

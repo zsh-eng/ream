@@ -33,17 +33,17 @@ th {
 }
 
 [data-color-palette='flexoki-light'] {
-  --background: hsl(48 100% 97%);
-  --foreground: hsl(0 3% 6%);
-  --muted: hsl(51 33% 92%);
-  --muted-foreground: hsl(50 3% 42%);
+  --background: rgb(255, 252, 240);
+  --foreground: rgb(16, 15, 15);
+  --muted: rgb(242, 240, 229);
+  --muted-foreground: rgb(111, 110, 105);
 }
 
 [data-color-palette='flexoki-dark'] {
-  --background: hsl(0 3% 6%);
-  --foreground: hsl(55 10% 79%);
-  --muted: hsl(30 4% 11%);
-  --muted-foreground: hsl(43 3% 52%);
+  --background: rgb(16, 15, 15);
+  --foreground: rgb(206, 205, 195);
+  --muted: rgb(28, 27, 26);
+  --muted-foreground: rgb(87, 86, 83);
 }
 
 [data-color-palette='tokyo-night'] {
@@ -51,6 +51,27 @@ th {
   --foreground: hsl(210 40% 98%);
   --muted: hsl(220 13% 13%);
   --muted-foreground: hsl(210 40% 98%);
+}
+
+[data-color-palette='rose-pine-dawn'] {
+  --background: #faf4ed;
+  --foreground: #575279;
+  --muted: #fffaf3;
+  --muted-foreground: #797593;
+}
+
+[data-color-palette='rose-pine-dusk'] {
+  --background: #191724;
+  --foreground: #e0def4;
+  --muted: #1f1d2e;
+  --muted-foreground: #908caa;
+}
+
+[data-color-palette='rose-pine-moon'] {
+  --background: #232136;
+  --foreground: #e0def4;
+  --muted: #2a273f;
+  --muted-foreground: #908caa;
 }
 
 /* https://modernfontstacks.com/ */
@@ -199,10 +220,11 @@ th {
 }
 
 :root {
-  --background: hsl(48 100% 97%);
-  --foreground: hsl(0 3% 6%);
-  --muted: hsl(51 33% 92%);
-  --muted-foreground: hsl(50 3% 42%);
+  /* Use Flexoki Light as the default color palette */
+  --background: rgb(255, 252, 240);
+  --foreground: rgb(16, 15, 15);
+  --muted: rgb(242, 240, 229);
+  --muted-foreground: rgb(111, 110, 105);
 
   --card: hsl(0 0% 100%);
   --card-foreground: hsl(0 0% 3.9%);

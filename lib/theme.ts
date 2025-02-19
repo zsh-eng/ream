@@ -4,6 +4,9 @@ export const COLOR_PALETTE_OPTIONS = [
   'flexoki-dark',
   'light',
   'dark',
+  'rose-pine-dawn',
+  'rose-pine-dusk',
+  'rose-pine-moon',
   'tokyo-night',
 ] as const;
 
