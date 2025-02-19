@@ -11,7 +11,6 @@ export default function App({ html, title, author }: AppProps) {
       data-theme='flexoki-dark'
       className='w-full min-h-screen flex bg-background py-16'
     >
-      {/* <h1 className="font-bold tracking-tight text-5xl mb-6 text-white w-[720px] pl-12">{title}</h1> */}
       <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground'></div>
       <div className='max-w-2xl px-4'>
         <h1 className='font-bold tracking-tight text-3xl lg:text-5xl mb-2 text-foreground'>

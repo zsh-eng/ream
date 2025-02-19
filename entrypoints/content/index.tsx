@@ -1,7 +1,7 @@
 import { Readability } from '@mozilla/readability';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
-import './style.css';
+import '~/assets/main.css';
+import App from '~/entrypoints/content/App.tsx';
 
 export default defineContentScript({
   matches: ['*://*/*'],
