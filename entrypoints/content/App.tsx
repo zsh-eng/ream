@@ -1,6 +1,6 @@
 import HeadingDropdownMenu from '@/components/heading-dropdown-menu';
 import TextDropdownMenu from '@/components/text-dropdown-menu';
-import ThemeDropdownMenu from '@/components/theme-dropdown-menu';
+import ColorPaletteDropdownMenu from '@/components/theme-dropdown-menu';
 import { getCurrentPageFaviconUrl } from '@/lib/favicon';
 
 type AppProps = {
@@ -33,7 +33,7 @@ export default function App({ html, title, author }: AppProps) {
         </article>
       </div>
       <div className='fixed top-4 right-4 flex flex-col'>
-        <ThemeDropdownMenu />
+        <ColorPaletteDropdownMenu />
         <HeadingDropdownMenu />
         <TextDropdownMenu />
       </div>

@@ -1,5 +1,5 @@
 import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
-import { DEFAULT_FONT, Font, FONTS } from '@/lib/fonts';
+import { Font, FONTS } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Type } from 'lucide-react';
 import { Button } from '~/components/ui/button';
@@ -40,15 +40,12 @@ function FontsDropdownMenuItem({
 
 export default function TextDropdownMenu() {
   const portalTarget = useContext(PortalTargetContext);
-  const [currentFont, setCurrentFont] = useState<Font>(
-    (portalTarget?.getAttribute('data-body') as Font) || DEFAULT_FONT
-  );
   const { activeDropdown, setActiveDropdown } = useContext(
     ActiveDropdownContext
   );
+  const { 'data-body': currentFont } = useTheme();
 
   const setFontAttribute = (font: Font) => {
-    setCurrentFont(font);
     portalTarget?.setAttribute('data-body', font);
   };
 

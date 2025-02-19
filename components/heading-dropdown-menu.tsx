@@ -1,4 +1,4 @@
-import { DEFAULT_FONT, Font, FONTS } from '@/lib/fonts';
+import { Font, FONTS } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Heading } from 'lucide-react';
 import { Button } from '~/components/ui/button';
@@ -10,6 +10,7 @@ import {
     DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { ActiveDropdownContext } from '~/hooks/active-dropdown-context';
+import { useTheme } from '~/hooks/use-theme';
 
 type FontsDropdownMenuItemProps = {
   font: string;
@@ -40,15 +41,12 @@ function FontsDropdownMenuItem({
 
 export default function HeadingDropdownMenu() {
   const portalTarget = useContext(PortalTargetContext);
-  const [currentFont, setCurrentFont] = useState<Font>(
-    (portalTarget?.getAttribute('data-headings') as Font) || DEFAULT_FONT
-  );
   const { activeDropdown, setActiveDropdown } = useContext(
     ActiveDropdownContext
   );
+  const { 'data-headings': currentFont } = useTheme();
 
   const setFontAttribute = (font: Font) => {
-    setCurrentFont(font);
     portalTarget?.setAttribute('data-headings', font);
   };
 

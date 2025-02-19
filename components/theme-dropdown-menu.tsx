@@ -1,20 +1,20 @@
-import { DEFAULT_THEME, Theme } from '@/lib/theme';
+import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
+import { COLOR_PALETTE_OPTIONS as COLOR_PALETTE_OPTIONS, ColorPalette } from '@/lib/theme';
 import { cn } from '@/lib/utils';
 import { PaintbrushIcon } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
-import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
-import { getCurrentPageFaviconUrl } from '@/lib/favicon';
+import { useTheme } from '~/hooks/use-theme';
 
-type ThemeDropdownMenuItemProps = {
+type ColorPaletteDropdownMenuItemProps = {
   selected?: boolean;
-  theme: Theme;
+  theme: ColorPalette;
   onClick: () => void;
 };
 
@@ -24,11 +24,11 @@ function kebabToTitleCase(theme: string) {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-function ThemeDropdownMenuItem({
+function ColorPaletteDropdownMenuItem({
   theme,
   onClick,
   selected = false,
-}: ThemeDropdownMenuItemProps) {
+}: ColorPaletteDropdownMenuItemProps) {
   const themeString = kebabToTitleCase(theme);
   return (
     <DropdownMenuItem onClick={onClick}>
@@ -37,7 +37,7 @@ function ThemeDropdownMenuItem({
           'w-60 h-12 flex justify-center items-center bg-background text-foreground',
           selected && 'border-2 border-solid border-blue-300'
         )}
-        data-theme={theme}
+        data-color-palette={theme}
       >
         {themeString}
       </div>
@@ -45,17 +45,15 @@ function ThemeDropdownMenuItem({
   );
 }
 
-export default function ThemeDropdownMenu() {
+export default function ColorPaletteDropdownMenu() {
   const portalTarget = useContext(PortalTargetContext);
-  const [currentTheme, setCurrentTheme] = useState<string>(
-    portalTarget?.getAttribute('data-theme') || DEFAULT_THEME
-  );
   const { activeDropdown, setActiveDropdown } = useContext(
     ActiveDropdownContext
   );
-  const setThemeAttribute = (theme: Theme) => {
-    portalTarget?.setAttribute('data-theme', theme);
-    setCurrentTheme(theme);
+
+  const { 'data-color-palette': currentColorPalette } = useTheme();
+  const setColorPaletteAttribute = (colorPalette: ColorPalette) => {
+    portalTarget?.setAttribute('data-color-palette', colorPalette);
   };
 
   return (
@@ -73,26 +71,21 @@ export default function ThemeDropdownMenu() {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className='border border-solid border-muted' align='start' side='left'>
-        <DropdownMenuLabel className=''>
-          Themes
-        </DropdownMenuLabel>
+      <DropdownMenuContent
+        className='border border-solid border-muted'
+        align='start'
+        side='left'
+      >
+        <DropdownMenuLabel className=''>Themes</DropdownMenuLabel>
 
-        <ThemeDropdownMenuItem
-          theme='flexoki-light'
-          onClick={() => setThemeAttribute('flexoki-light')}
-          selected={currentTheme === 'flexoki-light'}
-        />
-        <ThemeDropdownMenuItem
-          theme='flexoki-dark'
-          onClick={() => setThemeAttribute('flexoki-dark')}
-          selected={currentTheme === 'flexoki-dark'}
-        />
-        <ThemeDropdownMenuItem
-          theme='tokyo-night'
-          onClick={() => setThemeAttribute('tokyo-night')}
-          selected={currentTheme === 'tokyo-night'}
-        />
+        {COLOR_PALETTE_OPTIONS.map((theme) => (
+          <ColorPaletteDropdownMenuItem
+            key={theme}
+            theme={theme}
+            onClick={() => setColorPaletteAttribute(theme)}
+            selected={currentColorPalette === theme}
+          />
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

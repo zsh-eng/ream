@@ -32,21 +32,21 @@ th {
   animation: fadeIn 0.3s ease-out;
 }
 
-[data-theme='flexoki-light'] {
+[data-color-palette='flexoki-light'] {
   --background: hsl(48 100% 97%);
   --foreground: hsl(0 3% 6%);
   --muted: hsl(51 33% 92%);
   --muted-foreground: hsl(50 3% 42%);
 }
 
-[data-theme='flexoki-dark'] {
+[data-color-palette='flexoki-dark'] {
   --background: hsl(0 3% 6%);
   --foreground: hsl(55 10% 79%);
   --muted: hsl(30 4% 11%);
   --muted-foreground: hsl(43 3% 52%);
 }
 
-[data-theme='tokyo-night'] {
+[data-color-palette='tokyo-night'] {
   --background: hsl(220 13% 13%);
   --foreground: hsl(210 40% 98%);
   --muted: hsl(220 13% 13%);
@@ -199,6 +199,38 @@ th {
 }
 
 :root {
+  --background: hsl(48 100% 97%);
+  --foreground: hsl(0 3% 6%);
+  --muted: hsl(51 33% 92%);
+  --muted-foreground: hsl(50 3% 42%);
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(0 0% 3.9%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(0 0% 3.9%);
+  --primary: hsl(0 0% 9%);
+  --primary-foreground: hsl(0 0% 98%);
+  --secondary: hsl(0 0% 96.1%);
+  --secondary-foreground: hsl(0 0% 9%);
+  --accent: hsl(0 0% 96.1%);
+  --accent-foreground: hsl(0 0% 9%);
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(0 0% 89.8%);
+  --input: hsl(0 0% 89.8%);
+  --ring: hsl(0 0% 3.9%);
+  --chart-1: hsl(12 76% 61%);
+  --chart-2: hsl(173 58% 39%);
+  --chart-3: hsl(197 37% 24%);
+  --chart-4: hsl(43 74% 66%);
+  --chart-5: hsl(27 87% 67%);
+  --radius: 0.6rem;
+
+  --font-headings: system-ui, sans-serif;
+  --font-body: system-ui, sans-serif;
+}
+
+[data-color-palette='light'] {
   --background: hsl(0 0% 100%);
   --foreground: hsl(0 0% 3.9%);
   --card: hsl(0 0% 100%);
@@ -220,16 +252,13 @@ th {
   --ring: hsl(0 0% 3.9%);
   --chart-1: hsl(12 76% 61%);
   --chart-2: hsl(173 58% 39%);
-  --chart-3: hsl(197 37% 24%);
+  --chart-3: hsl(198, 15%, 77%);
   --chart-4: hsl(43 74% 66%);
   --chart-5: hsl(27 87% 67%);
   --radius: 0.6rem;
-
-  --font-headings: system-ui, sans-serif;
-  --font-body: system-ui, sans-serif;
 }
 
-[data-theme='dark'] {
+[data-color-palette='dark'] {
   --background: hsl(0 0% 3.9%);
   --foreground: hsl(0 0% 98%);
   --card: hsl(0 0% 3.9%);
