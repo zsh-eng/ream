@@ -26,6 +26,14 @@ export default defineConfig({
             },
           }
         : undefined,
+    commands: {
+      _execute_action: {
+        suggested_key: {
+          default: 'Ctrl+Shift+Y',
+          mac: 'Command+Shift+Y',
+        },
+      },
+    },
   }),
   vite: () => ({
     plugins: [tailwindcss()],
