@@ -6,7 +6,7 @@ export default defineConfig({
   extensionApi: 'chrome',
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    permissions: ['activeTab', 'scripting', 'storage', 'favicon'],
+    permissions: ['activeTab', 'storage'],
     action: {}, // to allow us to trigger on click
   },
   vite: () => ({
