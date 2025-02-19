@@ -17,6 +17,7 @@ h5,
 h6,
 th {
   font-family: var(--font-headings);
+  font-weight: 400;
 }
 
 @keyframes fadeIn {
