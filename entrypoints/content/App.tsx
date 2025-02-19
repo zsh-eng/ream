@@ -6,7 +6,7 @@ import { getCurrentPageFaviconUrl } from '@/lib/favicon';
 import { FontSize, SIZES } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { AArrowDown, AArrowUp, ArchiveIcon } from 'lucide-react';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { PortalTargetContext } from '~/hooks/portal-target-context.tsx';
 import { useTheme } from '~/hooks/use-theme';
 
@@ -18,9 +18,26 @@ type AppProps = {
 };
 
 export default function App({ html, title, author }: AppProps) {
+  const articleRef = useRef<HTMLDivElement>(null);
   const faviconUrl = getCurrentPageFaviconUrl();
   const { 'data-size': size } = useTheme();
   const portalTarget = useContext(PortalTargetContext);
+
+  // Instead of setting innerHTML, use DOMParser and add the nodes manually to the DOM
+  useEffect(() => {
+    if (!html || !articleRef.current) return;
+
+    while (articleRef.current.firstChild) {
+      articleRef.current.removeChild(articleRef.current.firstChild);
+    }
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const nodes = Array.from(doc.body.children);
+    nodes.forEach((node) => {
+      articleRef.current?.appendChild(node);
+    });
+  }, [html]);
 
   const setSize = (size: FontSize) => {
     if (!portalTarget) {
@@ -62,7 +79,7 @@ export default function App({ html, title, author }: AppProps) {
           </div>
         )}
         <article className={cn('prose', size)}>
-          <section dangerouslySetInnerHTML={{ __html: html ?? '' }}></section>
+          <section ref={articleRef} />
         </article>
       </div>
       <div className='fixed top-0 right-0 md:top-4 md:right-4 flex flex-col'>

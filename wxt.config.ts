@@ -5,7 +5,7 @@ import { defineConfig } from 'wxt';
 export default defineConfig({
   extensionApi: 'chrome',
   modules: ['@wxt-dev/module-react'],
-  manifest: {
+  manifest: ({ browser }) => ({
     permissions: ['activeTab', 'storage', 'scripting'],
     action: {}, // to allow us to trigger on click
     web_accessible_resources: [
@@ -18,7 +18,15 @@ export default defineConfig({
         matches: ['<all_urls>'],
       },
     ],
-  },
+    browser_specific_settings:
+      browser === 'firefox'
+        ? {
+            gecko: {
+              id: 'ream@ream.zsheng.app',
+            },
+          }
+        : undefined,
+  }),
   vite: () => ({
     plugins: [tailwindcss()],
   }),
