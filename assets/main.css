@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
 
 html {
   font-family: var(--font-body);
@@ -13,9 +16,7 @@ h5,
 h6,
 th {
   font-family: var(--font-headings);
-  font-weight: normal;
 }
-
 
 [data-theme='flexoki-light'] {
   --background: hsl(48 100% 97%);
