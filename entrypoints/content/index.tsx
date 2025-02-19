@@ -2,6 +2,7 @@ import { Readability } from '@mozilla/readability';
 import ReactDOM from 'react-dom/client';
 import '~/assets/main.css';
 import App from '~/entrypoints/content/App.tsx';
+import { PortalTargetContext } from '~/hooks/portal-target-context.tsx';
 
 export default defineContentScript({
   matches: ['*://*/*'],
@@ -40,16 +41,24 @@ export default defineContentScript({
         position: 'inline',
         anchor: 'body',
         append: 'before',
-        onMount: (container) => {
+        onMount: (container, shadow) => {
           // Don't mount react app directly on <body>
           const wrapper = document.createElement('div');
+
+          // To allow portals to target the shadow root
+          // See https://wxt.dev/guide/resources/faq.html#my-component-library-doesn-t-work-in-content-scripts
+          const portalTarget = shadow.querySelector('body');
+          portalTarget?.setAttribute('data-theme', 'flexoki-dark');
+
           const root = ReactDOM.createRoot(wrapper);
           root.render(
-            <App
-              html={article?.content}
-              title={article?.title}
-              author={article?.byline}
-            />
+            <PortalTargetContext.Provider value={portalTarget}>
+              <App
+                html={article?.content}
+                title={article?.title}
+                author={article?.byline}
+              />
+            </PortalTargetContext.Provider>
           );
 
           container.append(wrapper);

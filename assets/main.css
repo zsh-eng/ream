@@ -8,6 +8,10 @@ html {
   font-family: var(--font-body);
 }
 
+body {
+  transition: all 1.0s ease-in-out;
+}
+
 h1,
 h2,
 h3,
@@ -30,11 +34,6 @@ th {
   --foreground: hsl(55 10% 79%);
   --muted: hsl(30 4% 11%);
   --muted-foreground: hsl(43 3% 52%);
-
-  --font-headings: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L',
-    P052, serif;
-  --font-body: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
-    sans-serif;
 }
 
 [data-theme='tokyo-night'] {
@@ -70,6 +69,11 @@ th {
   --chart-4: hsl(43 74% 66%);
   --chart-5: hsl(27 87% 67%);
   --radius: 0.6rem;
+
+  --font-headings: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L',
+    P052, serif;
+  --font-body: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
+    sans-serif;
 }
 
 [data-theme='dark'] {
