@@ -9,6 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
+import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
 
 type ThemeDropdownMenuItemProps = {
   selected?: boolean;
@@ -28,7 +29,6 @@ function ThemeDropdownMenuItem({
   selected = false,
 }: ThemeDropdownMenuItemProps) {
   const themeString = kebabToTitleCase(theme);
-  console.log('selected', selected);
   return (
     <DropdownMenuItem onClick={onClick}>
       <div
@@ -49,18 +49,24 @@ export default function ThemeDropdownMenu() {
   const [currentTheme, setCurrentTheme] = useState<string>(
     portalTarget?.getAttribute('data-theme') || DEFAULT_THEME
   );
+  const { activeDropdown, setActiveDropdown } = useContext(
+    ActiveDropdownContext
+  );
   const setThemeAttribute = (theme: Theme) => {
     portalTarget?.setAttribute('data-theme', theme);
     setCurrentTheme(theme);
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      open={activeDropdown === 'theme'}
+      onOpenChange={(open) => setActiveDropdown(open ? 'theme' : null)}
+    >
       <DropdownMenuTrigger asChild>
         <Button
           variant='ghost'
           size={'icon'}
-          className='data-[state=open]:bg-muted data-[state=open]:text-foreground fixed top-4 right-4'
+          className='data-[state=open]:bg-muted data-[state=open]:text-foreground'
         >
           <PaintbrushIcon className='size-6' />
         </Button>

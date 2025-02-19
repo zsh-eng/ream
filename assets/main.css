@@ -4,12 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-html {
-  font-family: var(--font-body);
-}
-
 body {
-  transition: all 1.0s ease-in-out;
+  transition: all 1s ease-in-out;
+  font-family: var(--font-body);
 }
 
 h1,
@@ -43,6 +40,151 @@ th {
   --muted-foreground: hsl(210 40% 98%);
 }
 
+/* https://modernfontstacks.com/ */
+[data-headings='System UI'] {
+  --font-headings: system-ui, sans-serif;
+}
+
+[data-body='System UI'] {
+  --font-body: system-ui, sans-serif;
+}
+
+[data-headings='Charter'] {
+  --font-headings: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+}
+
+[data-body='Charter'] {
+  --font-body: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+}
+
+[data-headings='Old Style'] {
+  --font-headings: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L',
+    P052, serif;
+}
+
+[data-body='Old Style'] {
+  --font-body: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', P052,
+    serif;
+}
+
+[data-headings='Humanist'] {
+  --font-headings: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans',
+    source-sans-pro, sans-serif;
+}
+
+[data-body='Humanist'] {
+  --font-body: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans',
+    source-sans-pro, sans-serif;
+}
+
+[data-headings='Geometric Humanist'] {
+  --font-headings: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
+    sans-serif;
+}
+
+[data-body='Geometric Humanist'] {
+  --font-body: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
+    sans-serif;
+}
+
+[data-headings='Classical Humanist'] {
+  --font-headings: Optima, Candara, 'Noto Sans', source-sans-pro, sans-serif;
+}
+
+[data-body='Classical Humanist'] {
+  --font-body: Optima, Candara, 'Noto Sans', source-sans-pro, sans-serif;
+}
+
+[data-headings='Neo Grotesque'] {
+  --font-headings: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans',
+    Arial, sans-serif;
+}
+
+[data-body='Neo Grotesque'] {
+  --font-body: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans',
+    Arial, sans-serif;
+}
+
+[data-headings='Monospace Slab'] {
+  --font-headings: 'Nimbus Mono PS', 'Courier New', monospace;
+}
+
+[data-body='Monospace Slab'] {
+  --font-body: 'Nimbus Mono PS', 'Courier New', monospace;
+}
+
+[data-headings='Monospace Code'] {
+  --font-headings: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo,
+    Consolas, 'DejaVu Sans Mono', monospace;
+}
+
+[data-body='Monospace Code'] {
+  --font-body: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
+    'DejaVu Sans Mono', monospace;
+}
+
+[data-headings='Industrial'] {
+  --font-headings: Bahnschrift, 'DIN Alternate', 'Franklin Gothic Medium',
+    'Nimbus Sans Narrow', sans-serif-condensed, sans-serif;
+}
+
+[data-body='Industrial'] {
+  --font-body: Bahnschrift, 'DIN Alternate', 'Franklin Gothic Medium',
+    'Nimbus Sans Narrow', sans-serif-condensed, sans-serif;
+}
+
+[data-headings='Rounded Sans'] {
+  --font-headings: ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa,
+    Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri,
+    source-sans-pro, sans-serif;
+}
+
+[data-body='Rounded Sans'] {
+  --font-body: ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa,
+    Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri,
+    source-sans-pro, sans-serif;
+}
+
+[data-headings='Slab Serif'] {
+  --font-headings: Rockwell, 'Rockwell Nova', 'Roboto Slab', 'DejaVu Serif',
+    'Sitka Small', serif;
+}
+
+[data-body='Slab Serif'] {
+  --font-body: Rockwell, 'Rockwell Nova', 'Roboto Slab', 'DejaVu Serif',
+    'Sitka Small', serif;
+}
+
+[data-headings='Antique'] {
+  --font-headings: Superclarendon, 'Bookman Old Style', 'URW Bookman',
+    'URW Bookman L', 'Georgia Pro', Georgia, serif;
+}
+
+[data-body='Antique'] {
+  --font-body: Superclarendon, 'Bookman Old Style', 'URW Bookman',
+    'URW Bookman L', 'Georgia Pro', Georgia, serif;
+}
+
+[data-headings='Didone'] {
+  --font-headings: Didot, 'Bodoni MT', 'Noto Serif Display', 'URW Palladio L',
+    P052, Sylfaen, serif;
+}
+
+[data-body='Didone'] {
+  --font-body: Didot, 'Bodoni MT', 'Noto Serif Display', 'URW Palladio L', P052,
+    Sylfaen, serif;
+}
+
+[data-headings='Handwritten'] {
+  --font-headings: 'Segoe Print', 'Bradley Hand', Chilanka, TSCu_Comic, casual,
+    cursive;
+}
+
+[data-body='Handwritten'] {
+  --font-body: 'Segoe Print', 'Bradley Hand', Chilanka, TSCu_Comic, casual,
+    cursive;
+}
+
 :root {
   --background: hsl(0 0% 100%);
   --foreground: hsl(0 0% 3.9%);
@@ -70,10 +212,8 @@ th {
   --chart-5: hsl(27 87% 67%);
   --radius: 0.6rem;
 
-  --font-headings: 'Iowan Old Style', 'Palatino Linotype', 'URW Palladio L',
-    P052, serif;
-  --font-body: Avenir, Montserrat, Corbel, 'URW Gothic', source-sans-pro,
-    sans-serif;
+  --font-headings: system-ui, sans-serif;
+  --font-body: system-ui, sans-serif;
 }
 
 [data-theme='dark'] {
