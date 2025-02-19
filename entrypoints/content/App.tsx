@@ -1,6 +1,7 @@
 import HeadingDropdownMenu from '@/components/heading-dropdown-menu';
 import TextDropdownMenu from '@/components/text-dropdown-menu';
 import ThemeDropdownMenu from '@/components/theme-dropdown-menu';
+import { getCurrentPageFaviconUrl } from '@/lib/favicon';
 
 type AppProps = {
   // markdown: string;
@@ -10,15 +11,22 @@ type AppProps = {
 };
 
 export default function App({ html, title, author }: AppProps) {
+  const faviconUrl = getCurrentPageFaviconUrl();
+
   return (
-    <div className='w-full min-h-screen flex items-start bg-background py-16'>
+    <div className='w-full min-h-screen flex items-start bg-background py-16 animate-fadein'>
       <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground'></div>
       <div className='max-w-2xl px-4'>
-        <h1 className='font-bold tracking-tight text-3xl lg:text-5xl mb-2 text-foreground'>
+        <div className='flex items-center gap-1 mb-2'></div>
+
+        <h1 className='tracking-tight text-3xl md:text-5xl mb-2 text-foreground'>
           {title}
         </h1>
         {author && (
-          <div className='mb-6 uppercase text-muted-foreground'>{author}</div>
+          <div className='mb-6 flex gap-2 items-center'>
+            <img src={faviconUrl} alt={'favicon'} className='w-5 h-5' />
+            <div className='uppercase text-muted-foreground'>{author}</div>
+          </div>
         )}
         <article className='prose prose-xl max-w-none'>
           <section dangerouslySetInnerHTML={{ __html: html ?? '' }}></section>

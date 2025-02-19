@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
+import { getCurrentPageFaviconUrl } from '@/lib/favicon';
 
 type ThemeDropdownMenuItemProps = {
   selected?: boolean;

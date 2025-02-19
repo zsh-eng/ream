@@ -19,6 +19,19 @@ th {
   font-family: var(--font-headings);
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fadein {
+  animation: fadeIn 0.3s ease-out;
+}
+
 [data-theme='flexoki-light'] {
   --background: hsl(48 100% 97%);
   --foreground: hsl(0 3% 6%);
