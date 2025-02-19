@@ -1,9 +1,9 @@
 import { PortalTargetContext } from '@/hooks/portal-target-context';
 import { DEFAULT_FONT } from '@/lib/fonts';
 import {
-    DEFAULT_COLOR_PALETTE,
-    THEME_ATTRIBUTES,
-    ThemeAttribute,
+  DEFAULT_COLOR_PALETTE,
+  THEME_ATTRIBUTES,
+  ThemeAttribute,
 } from '@/lib/theme';
 import { useContext } from 'react';
 
@@ -11,6 +11,7 @@ const DEFAULT_THEME_ATTRIBUTES: Record<ThemeAttribute, string> = {
   'data-color-palette': DEFAULT_COLOR_PALETTE,
   'data-headings': DEFAULT_FONT,
   'data-body': DEFAULT_FONT,
+  'data-size': 'prose-xl',
 };
 
 export function useTheme() {

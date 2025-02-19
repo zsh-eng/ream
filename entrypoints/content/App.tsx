@@ -1,9 +1,14 @@
+import ColorPaletteDropdownMenu from '@/components/color-palette-dropdown-menu';
 import HeadingDropdownMenu from '@/components/heading-dropdown-menu';
 import TextDropdownMenu from '@/components/text-dropdown-menu';
-import ColorPaletteDropdownMenu from '@/components/color-palette-dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { getCurrentPageFaviconUrl } from '@/lib/favicon';
-import { ArchiveIcon } from 'lucide-react';
+import { FontSize, SIZES } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
+import { AArrowDown, AArrowUp, ArchiveIcon } from 'lucide-react';
+import { useContext } from 'react';
+import { PortalTargetContext } from '~/hooks/portal-target-context.tsx';
+import { useTheme } from '~/hooks/use-theme';
 
 type AppProps = {
   // markdown: string;
@@ -14,13 +19,40 @@ type AppProps = {
 
 export default function App({ html, title, author }: AppProps) {
   const faviconUrl = getCurrentPageFaviconUrl();
+  const { 'data-size': size } = useTheme();
+  const portalTarget = useContext(PortalTargetContext);
+
+  const setSize = (size: FontSize) => {
+    if (!portalTarget) {
+      return;
+    }
+
+    portalTarget.setAttribute('data-size', size);
+  };
+  const getPreviousSize = (size: FontSize) => {
+    const index = SIZES.indexOf(size);
+    return SIZES[(index - 1 + SIZES.length) % SIZES.length] as FontSize;
+  };
+  const getNextSize = (size: FontSize) => {
+    const index = SIZES.indexOf(size);
+    return SIZES[(index + 1 + SIZES.length) % SIZES.length] as FontSize;
+  };
 
   return (
     <div className='w-full min-h-screen flex items-start bg-background py-16 animate-fadein'>
       <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground'></div>
       <div className='max-w-2xl px-4'>
         <div className='flex items-center gap-1 mb-2'></div>
-        <h1 className='tracking-tight text-3xl md:text-5xl mb-2 text-foreground'>
+        <h1
+          className={cn(
+            'tracking-tight mb-2 text-foreground',
+            size === 'prose-sm' && 'text-2xl',
+            size === 'prose-base' && 'text-3xl',
+            size === 'prose-lg' && 'text-4xl',
+            size === 'prose-xl' && 'text-5xl',
+            size === 'prose-2xl' && 'text-6xl'
+          )}
+        >
           {title}
         </h1>
         {author && (
@@ -29,11 +61,30 @@ export default function App({ html, title, author }: AppProps) {
             <div className='uppercase text-muted-foreground'>{author}</div>
           </div>
         )}
-        <article className='prose prose-xl max-w-none'>
+        <article className={cn('prose', size)}>
           <section dangerouslySetInnerHTML={{ __html: html ?? '' }}></section>
         </article>
       </div>
       <div className='fixed top-0 right-0 md:top-4 md:right-4 flex flex-col'>
+        <Button
+          variant='ghost'
+          size='icon'
+          disabled={size === SIZES[SIZES.length - 1]}
+          onClick={() => setSize(getNextSize(size as FontSize))}
+        >
+          <AArrowUp className='size-6' />
+        </Button>
+        <Button
+          variant='ghost'
+          size='icon'
+          disabled={size === SIZES[0]}
+          onClick={() => {
+            setSize(getPreviousSize(size as FontSize));
+          }}
+        >
+          <AArrowDown className='size-6' />
+        </Button>
+
         <ColorPaletteDropdownMenu />
         <HeadingDropdownMenu />
         <TextDropdownMenu />

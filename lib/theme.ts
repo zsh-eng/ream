@@ -16,5 +16,6 @@ export const THEME_ATTRIBUTES = [
   'data-color-palette',
   'data-headings',
   'data-body',
+  'data-size',
 ] as const;
 export type ThemeAttribute = (typeof THEME_ATTRIBUTES)[number];

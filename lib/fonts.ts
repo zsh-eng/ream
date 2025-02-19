@@ -18,3 +18,13 @@ export const FONTS = [
 ] as const;
 
 export type Font = typeof FONTS[number];
+
+export const SIZES = [
+  'prose-sm',
+  'prose-base',
+  'prose-lg',
+  'prose-xl',
+  'prose-2xl',
+] as const;
+
+export type FontSize = typeof SIZES[number];
