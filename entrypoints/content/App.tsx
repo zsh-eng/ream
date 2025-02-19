@@ -7,14 +7,20 @@ type AppProps = {
 
 export default function App({ html, title, author }: AppProps) {
   return (
-    <div className='w-full min-h-screen flex flex-col items-center bg-black py-32'>
+    <div
+      data-theme='flexoki-dark'
+      className='w-full min-h-screen flex bg-background py-16'
+    >
       {/* <h1 className="font-bold tracking-tight text-5xl mb-6 text-white w-[720px] pl-12">{title}</h1> */}
-      <div className='max-w-2xl'>
-        <h1 className='font-bold tracking-tight text-5xl mb-2 text-white'>
+      <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground'></div>
+      <div className='max-w-2xl px-4'>
+        <h1 className='font-bold tracking-tight text-3xl lg:text-5xl mb-2 text-foreground'>
           {title}
         </h1>
-        {author && <div className='mb-6 uppercase text-gray-300'>{author}</div>}
-        <article className='prose prose-invert'>
+        {author && (
+          <div className='mb-6 uppercase text-muted-foreground'>{author}</div>
+        )}
+        <article className='prose prose-xl max-w-none'>
           <section dangerouslySetInnerHTML={{ __html: html ?? '' }}></section>
         </article>
       </div>
