@@ -17,7 +17,8 @@ async function applyThemeAttributes(portalTarget: HTMLElement) {
 }
 
 export default defineContentScript({
-  matches: ['*://*/*'],
+  registration: 'runtime',
+  matches: [],
   cssInjectionMode: 'ui',
 
   async main(ctx) {
