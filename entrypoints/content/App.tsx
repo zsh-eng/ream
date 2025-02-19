@@ -1,7 +1,9 @@
 import HeadingDropdownMenu from '@/components/heading-dropdown-menu';
 import TextDropdownMenu from '@/components/text-dropdown-menu';
 import ColorPaletteDropdownMenu from '@/components/theme-dropdown-menu';
+import { Button } from '@/components/ui/button';
 import { getCurrentPageFaviconUrl } from '@/lib/favicon';
+import { ArchiveIcon, ExternalLink } from 'lucide-react';
 
 type AppProps = {
   // markdown: string;
@@ -36,7 +38,18 @@ export default function App({ html, title, author }: AppProps) {
         <ColorPaletteDropdownMenu />
         <HeadingDropdownMenu />
         <TextDropdownMenu />
+        <div className='flex-1'></div>
       </div>
+
+      <a
+        href={`https://archive.ph/timegate/${window.location.href}`}
+        target='_blank'
+        className='fixed bottom-4 right-4'
+      >
+        <Button variant='ghost' size='icon'>
+          <ArchiveIcon className='size-6' />
+        </Button>
+      </a>
     </div>
   );
 }

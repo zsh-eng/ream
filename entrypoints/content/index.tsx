@@ -129,13 +129,11 @@ export default defineContentScript({
     };
 
     // Add message listener for unmounting
-    chrome.runtime.onMessage.addListener((message) => {
+    browser.runtime.onMessage.addListener((message) => {
       if (message.action === 'unmount') {
-        console.log('unmount');
         ui.remove();
         return true;
       } else if (message.action === 'mount') {
-        console.log('mount');
         create();
         return true;
       }
