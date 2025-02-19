@@ -1,6 +1,6 @@
 import HeadingDropdownMenu from '@/components/heading-dropdown-menu';
 import TextDropdownMenu from '@/components/text-dropdown-menu';
-import ColorPaletteDropdownMenu from '@/components/theme-dropdown-menu';
+import ColorPaletteDropdownMenu from '@/components/color-palette-dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { getCurrentPageFaviconUrl } from '@/lib/favicon';
 import { ArchiveIcon } from 'lucide-react';

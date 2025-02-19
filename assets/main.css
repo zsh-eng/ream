@@ -28,8 +28,20 @@ th {
   }
 }
 
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 .animate-fadein {
   animation: fadeIn 0.3s ease-out;
+}
+
+.animate-fadeout {
+  animation: fadeOut 0.3s ease-out;
 }
 
 [data-color-palette='flexoki-light'] {
