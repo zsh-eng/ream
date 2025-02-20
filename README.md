@@ -4,11 +4,11 @@ Ream is a simple, clean, open-source reader mode extension for Chrome and Firefo
 
 ## Screenshots
 
-![Desktop Light](./public/light-screenshot.png)
+![Desktop Light](./docs/light-screenshot.png)
 
-![Desktop Dark](./public/dark-screenshot.png)
+![Desktop Dark](./docs/dark-screenshot.png)
 
-![Desktop Rose Pine](./public/rose-screenshot.png)
+![Desktop Rose Pine](./docs/rose-screenshot.png)
 
 ## Motivation
 
