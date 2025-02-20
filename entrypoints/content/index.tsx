@@ -39,16 +39,12 @@ export default defineContentScript({
         return clone;
       });
 
-      // parse() works by modifying the DOM.
       const documentClone = document.cloneNode(true) as Document;
-      const article = new Readability(documentClone).parse();
+      const article = new Readability(documentClone, {
+        serializer: (el) => el,
+      }).parse();
 
       document.body.style.display = 'none';
-      // await new Promise((resolve) => setTimeout(resolve, 300));
-
-      // const turndown = new TurndownService();
-      // console.log(article?.content)
-      // const markdown = turndown.turndown(article?.content ?? '');
       ui = await createShadowRootUi(ctx, {
         name: 'reader-mode',
         position: 'inline',
@@ -100,11 +96,12 @@ export default defineContentScript({
           observer.observe(portalTarget, config);
 
           const root = ReactDOM.createRoot(wrapper);
+          console.log(article?.content);
           root.render(
             <PortalTargetContext.Provider value={portalTarget}>
               <DropdownProvider>
                 <App
-                  html={article?.content}
+                  contentNode={article?.content}
                   title={article?.title}
                   author={article?.byline}
                 />

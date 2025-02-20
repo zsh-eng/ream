@@ -13,31 +13,46 @@ import { useTheme } from '~/hooks/use-theme';
 type AppProps = {
   // markdown: string;
   title?: string;
-  html?: string;
+  contentNode?: Node;
   author?: string;
 };
 
-export default function App({ html, title, author }: AppProps) {
+// The top level is .readability-content
+// Which might be wrapped by .readability-page if the library detects pages present
+// This might be further wrapped by article tags
+// To obtain a flatter structure for our Gemini calls, we need to unravel at least some of these
+function extractContentElements(contentNode: Node) {
+  const children = Array.from((contentNode as unknown as Element).children);
+  const readabilityPageChildren = children.flatMap((child) =>
+    child.id?.startsWith('readability-page')
+      ? Array.from(child.children)
+      : [child]
+  );
+  const articleChildren = readabilityPageChildren.flatMap((child) =>
+    child.tagName === 'ARTICLE'
+      ? Array.from(child.children)
+      : [child]
+  );
+  return articleChildren;
+}
+
+export default function App({ contentNode, title, author }: AppProps) {
   const articleRef = useRef<HTMLDivElement>(null);
   const faviconUrl = getCurrentPageFaviconUrl();
   const { 'data-size': size } = useTheme();
   const portalTarget = useContext(PortalTargetContext);
 
-  // Instead of setting innerHTML, use DOMParser and add the nodes manually to the DOM
   useEffect(() => {
-    if (!html || !articleRef.current) return;
-
+    if (!contentNode || !articleRef.current) return;
     while (articleRef.current.firstChild) {
       articleRef.current.removeChild(articleRef.current.firstChild);
     }
 
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, 'text/html');
-    const nodes = Array.from(doc.body.children);
+    const nodes = extractContentElements(contentNode);
     nodes.forEach((node) => {
       articleRef.current?.appendChild(node);
     });
-  }, [html]);
+  }, [contentNode]);
 
   const setSize = (size: FontSize) => {
     if (!portalTarget) {
@@ -78,9 +93,7 @@ export default function App({ html, title, author }: AppProps) {
             <div className='uppercase text-muted-foreground'>{author}</div>
           </div>
         )}
-        <article className={cn('prose', size)}>
-          <section ref={articleRef} />
-        </article>
+        <article className={cn('prose', size)} ref={articleRef} />
       </div>
       <div className='fixed top-0 right-0 md:top-4 md:right-4 flex flex-col'>
         <Button
