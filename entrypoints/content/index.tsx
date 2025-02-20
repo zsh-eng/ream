@@ -13,8 +13,7 @@ async function applyThemeAttributes(portalTarget: HTMLElement) {
     const value = await storage.getItem(`local:${attribute}`);
     if (typeof value === 'string') {
       portalTarget.setAttribute(attribute, value);
-    }
-  }
+    }  }
 }
 
 async function setupThemeManagement(portalTarget: HTMLElement) {

@@ -5,7 +5,7 @@ import {
   THEME_ATTRIBUTES,
   ThemeAttribute,
 } from '@/lib/theme';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 const DEFAULT_THEME_ATTRIBUTES: Record<ThemeAttribute, string> = {
   'data-color-palette': DEFAULT_COLOR_PALETTE,

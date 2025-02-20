@@ -1,11 +1,13 @@
 import Keycap from '@/components/keycap';
 import { ThemeSwitchPopup } from '@/components/theme-switch-popup';
 import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
+import { PortalTargetContext } from '@/hooks/portal-target-context';
 import { useThemeShortcut } from '@/hooks/theme-shortcut';
 import { useThemeSwitcher } from '@/hooks/use-theme-switcher';
 import { COLOR_PALETTE_OPTIONS, ColorPalette } from '@/lib/theme';
 import { cn, kebabToTitleCase } from '@/lib/utils';
 import { PaintbrushIcon } from 'lucide-react';
+import { useContext } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   DropdownMenu,

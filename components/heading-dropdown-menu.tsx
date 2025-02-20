@@ -2,6 +2,7 @@ import Keycap from '@/components/keycap';
 import { Font, FONTS } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Heading } from 'lucide-react';
+import { useContext } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   DropdownMenu,
@@ -11,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { ActiveDropdownContext } from '~/hooks/active-dropdown-context';
+import { PortalTargetContext } from '~/hooks/portal-target-context';
 import { useThemeShortcut } from '~/hooks/theme-shortcut';
 import { useTheme } from '~/hooks/use-theme';
 

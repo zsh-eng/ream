@@ -3,6 +3,7 @@ import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
 import { Font, FONTS } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Type } from 'lucide-react';
+import { useContext } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   DropdownMenu,
@@ -11,7 +12,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
+import { PortalTargetContext } from '~/hooks/portal-target-context';
 import { useThemeShortcut } from '~/hooks/theme-shortcut';
+import { useTheme } from '~/hooks/use-theme';
 
 type FontsDropdownMenuItemProps = {
   font: string;
