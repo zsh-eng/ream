@@ -1,8 +1,10 @@
 import { MainContent } from '@/components/main-content';
 import { NavigationBar } from '@/components/navigation-bar';
 import { useFontSize } from '@/hooks/use-font-size';
-import { useKeyboardShortcut } from '@/hooks/use-keyboard-shortcut';
-import { getCurrentPageFaviconUrl } from '@/lib/favicon';
+import {
+  useFontSizeKeyboardShortcut,
+  useKeyboardShortcut,
+} from '@/hooks/use-keyboard-shortcut';
 import { FontSize } from '@/lib/fonts';
 import { useContext, useEffect, useRef } from 'react';
 import { PortalTargetContext } from '~/hooks/portal-target-context.tsx';
@@ -34,10 +36,10 @@ function extractContentElements(contentNode: Node) {
 
 export default function App({ contentNode, title, author }: AppProps) {
   const articleRef = useRef<HTMLDivElement>(null);
-  const faviconUrl = getCurrentPageFaviconUrl();
   const { 'data-size': size } = useTheme();
   const portalTarget = useContext(PortalTargetContext);
 
+  useFontSizeKeyboardShortcut(portalTarget);
   const { isNavBarAutoHide, showKeyboardShortcuts } = useKeyboardShortcut();
   const { setSize, getPreviousSize, getNextSize } = useFontSize(portalTarget);
 

@@ -6,7 +6,7 @@ type MainContentProps = {
   title?: string;
   author?: string;
   size: string;
-  articleRef: RefObject<HTMLDivElement>;
+  articleRef: RefObject<HTMLDivElement | null>;
 };
 
 export function MainContent({

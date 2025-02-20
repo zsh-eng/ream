@@ -36,7 +36,7 @@ export function NavigationBar({
       >
         <div className='relative'>
           {showKeyboardShortcuts && (
-            <Keycap character='1' className='animate-bubble' />
+            <Keycap character='1' className='' />
           )}
           <Button
             variant='ghost'

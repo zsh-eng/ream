@@ -4,6 +4,7 @@ type KeycapProps = {
   character: string;
   className?: string;
 };
+
 export default function Keycap({ character, className }: KeycapProps) {
   return (
     <div
