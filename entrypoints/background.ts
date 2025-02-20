@@ -49,7 +49,7 @@ export default defineBackground(() => {
     const url = browser.runtime.getURL('/saved.html');
 
     if (text === 'https://archive.today') {
-      browser.tabs.create({ url: 'https://archive.today' });
+      browser.tabs.create({ url: `${url}#/saved` });
       return;
     }
 
