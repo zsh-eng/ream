@@ -19,3 +19,15 @@ export const THEME_ATTRIBUTES = [
   'data-size',
 ] as const;
 export type ThemeAttribute = (typeof THEME_ATTRIBUTES)[number];
+
+export function getNextColorPalette(currentColorPalette: ColorPalette) {
+  const index = COLOR_PALETTE_OPTIONS.indexOf(currentColorPalette);
+  return COLOR_PALETTE_OPTIONS[(index + 1) % COLOR_PALETTE_OPTIONS.length];
+}
+
+export function getPreviousColorPalette(currentColorPalette: ColorPalette) {
+  const index = COLOR_PALETTE_OPTIONS.indexOf(currentColorPalette);
+  return COLOR_PALETTE_OPTIONS[
+    (index - 1 + COLOR_PALETTE_OPTIONS.length) % COLOR_PALETTE_OPTIONS.length
+  ];
+}

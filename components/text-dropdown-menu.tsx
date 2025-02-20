@@ -76,7 +76,7 @@ export default function TextDropdownMenu({
 
       <DropdownMenuContent
         className='border border-solid border-muted h-96 overflow-y-auto'
-        align='start'
+        align='center'
         side='left'
       >
         <DropdownMenuLabel className=''>Text Font</DropdownMenuLabel>

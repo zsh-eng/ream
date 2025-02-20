@@ -76,8 +76,8 @@ export default function HeadingDropdownMenu({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        className='border border-solid border-muted'
-        align='start'
+        className='border border-solid border-muted mt-12'
+        align='center'
         side='left'
       >
         <DropdownMenuLabel className=''>Heading Font</DropdownMenuLabel>
