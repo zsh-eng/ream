@@ -1,7 +1,10 @@
+import Keycap from '@/components/keycap';
 import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
+import { useThemeShortcut } from '@/hooks/theme-shortcut';
 import { COLOR_PALETTE_OPTIONS, ColorPalette } from '@/lib/theme';
 import { cn } from '@/lib/utils';
 import { PaintbrushIcon } from 'lucide-react';
+import { createPortal } from 'react-dom';
 import { Button } from '~/components/ui/button';
 import {
   DropdownMenu,
@@ -57,7 +60,11 @@ function ColorPaletteDropdownMenuItem({
   );
 }
 
-export default function ColorPaletteDropdownMenu() {
+export default function ColorPaletteDropdownMenu({
+  showKeyboardShortcuts = false,
+}: {
+  showKeyboardShortcuts?: boolean;
+}) {
   const portalTarget = useContext(PortalTargetContext);
   const { activeDropdown, setActiveDropdown } = useContext(
     ActiveDropdownContext
@@ -117,53 +124,61 @@ export default function ColorPaletteDropdownMenu() {
   }, [currentColorPalette]);
 
   const isActive = activeDropdown === 'theme';
+  useThemeShortcut('theme', '3');
 
   return (
-    <DropdownMenu
-      open={isActive}
-      onOpenChange={(open) => setActiveDropdown(open ? 'theme' : null)}
-    >
-      {colorPalettePopupVisible && (
-        <div
-          className={cn(
-            'absolute right-16 top-8 w-60 h-12 flex justify-center items-center bg-background text-foreground',
-            'border-2 border-solid border-blue-300',
-            isAnimatingOut ? 'animate-fadeout' : 'animate-fadein'
-          )}
-          data-color-palette={currentColorPalette}
-        >
-          {kebabToTitleCase(currentColorPalette as ColorPalette)}
-        </div>
-      )}
+    <>
+      {colorPalettePopupVisible &&
+        createPortal(
+          <div
+            className={cn(
+              'fixed left-4 top-4 w-60 h-12 flex justify-center items-center bg-background text-foreground',
+              'border-2 border-solid border-blue-300',
+              isAnimatingOut ? 'animate-fadeout' : 'animate-fadein'
+            )}
+            data-color-palette={currentColorPalette}
+          >
+            {kebabToTitleCase(currentColorPalette as ColorPalette)}
+          </div>,
+          portalTarget ?? document.body
+        )}
 
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant='ghost'
-          size={'icon'}
-          className='data-[state=open]:bg-muted data-[state=open]:text-foreground'
-        >
-          <PaintbrushIcon className='size-6' />
-        </Button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent
-        className='border border-solid border-muted'
-        align='start'
-        side='left'
+      <DropdownMenu
+        open={isActive}
+        onOpenChange={(open) => setActiveDropdown(open ? 'theme' : null)}
       >
-        <DropdownMenuLabel className=''>Themes</DropdownMenuLabel>
+        <DropdownMenuTrigger asChild>
+          <div className='relative'>
+            {showKeyboardShortcuts && <Keycap character='3' />}
+            <Button
+              variant='ghost'
+              size={'icon'}
+              className='data-[state=open]:bg-muted data-[state=open]:text-foreground'
+            >
+              <PaintbrushIcon className='size-6' />
+            </Button>
+          </div>
+        </DropdownMenuTrigger>
 
-        <div className='flex flex-col h-96 overflow-y-auto'>
-          {COLOR_PALETTE_OPTIONS.map((theme) => (
-            <ColorPaletteDropdownMenuItem
-              key={theme}
-              theme={theme}
-              onClick={() => setColorPaletteAttribute(theme)}
-              selected={currentColorPalette === theme}
-            />
-          ))}
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <DropdownMenuContent
+          className='border border-solid border-muted'
+          align='start'
+          side='left'
+        >
+          <DropdownMenuLabel className=''>Themes</DropdownMenuLabel>
+
+          <div className='flex flex-col h-96 overflow-y-auto'>
+            {COLOR_PALETTE_OPTIONS.map((theme) => (
+              <ColorPaletteDropdownMenuItem
+                key={theme}
+                theme={theme}
+                onClick={() => setColorPaletteAttribute(theme)}
+                selected={currentColorPalette === theme}
+              />
+            ))}
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 }

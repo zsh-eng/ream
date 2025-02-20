@@ -20,6 +20,18 @@ th {
   font-weight: 400;
 }
 
+@keyframes bubble {
+  0% {
+    transform: scale(0.7);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -37,12 +49,17 @@ th {
     opacity: 0;
   }
 }
+
 .animate-fadein {
   animation: fadeIn 0.3s ease-out;
 }
 
 .animate-fadeout {
   animation: fadeOut 0.3s ease-out;
+}
+
+.animate-bubble {
+  animation: bubble 0.2s ease-out;
 }
 
 [data-color-palette='flexoki-light'] {

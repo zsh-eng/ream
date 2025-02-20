@@ -1,5 +1,6 @@
 import ColorPaletteDropdownMenu from '@/components/color-palette-dropdown-menu';
 import HeadingDropdownMenu from '@/components/heading-dropdown-menu';
+import Keycap from '@/components/keycap';
 import TextDropdownMenu from '@/components/text-dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { getCurrentPageFaviconUrl } from '@/lib/favicon';
@@ -79,6 +80,17 @@ export default function App({ contentNode, title, author }: AppProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === '?') {
+        setShowKeyboardShortcuts((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div className='w-full min-h-screen flex items-start bg-background py-16 animate-fadein'>
       <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground'></div>
@@ -118,29 +130,40 @@ export default function App({ contentNode, title, author }: AppProps) {
           !isNavBarAutoHide && 'translate-x-0'
         )}
       >
-        <Button
-          variant='ghost'
-          size='icon'
-          disabled={size === SIZES[SIZES.length - 1]}
-          onClick={() => setSize(getNextSize(size as FontSize))}
-          className=''
-        >
-          <AArrowUp className='size-7' />
-        </Button>
-        <Button
-          variant='ghost'
-          size='icon'
-          disabled={size === SIZES[0]}
-          onClick={() => {
-            setSize(getPreviousSize(size as FontSize));
-          }}
-        >
-          <AArrowDown className='size-7' />
-        </Button>
+        <div className='relative'>
+          {showKeyboardShortcuts && (
+            <Keycap character='1' className='animate-bubble' />
+          )}
+          <Button
+            variant='ghost'
+            size='icon'
+            disabled={size === SIZES[SIZES.length - 1]}
+            onClick={() => setSize(getNextSize(size as FontSize))}
+            className=''
+          >
+            <AArrowUp className='size-7' />
+          </Button>
+        </div>
 
-        <ColorPaletteDropdownMenu />
-        <HeadingDropdownMenu />
-        <TextDropdownMenu />
+        <div className='relative'>
+          {showKeyboardShortcuts && <Keycap character='2' />}
+          <Button
+            variant='ghost'
+            size='icon'
+            disabled={size === SIZES[0]}
+            onClick={() => {
+              setSize(getPreviousSize(size as FontSize));
+            }}
+          >
+            <AArrowDown className='size-7' />
+          </Button>
+        </div>
+
+        <ColorPaletteDropdownMenu
+          showKeyboardShortcuts={showKeyboardShortcuts}
+        />
+        <HeadingDropdownMenu showKeyboardShortcuts={showKeyboardShortcuts} />
+        <TextDropdownMenu showKeyboardShortcuts={showKeyboardShortcuts} />
         <div className='flex-1 h-full'></div>
 
         <a

@@ -1,15 +1,17 @@
+import Keycap from '@/components/keycap';
 import { ActiveDropdownContext } from '@/hooks/active-dropdown-context';
 import { Font, FONTS } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Type } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
+import { useThemeShortcut } from '~/hooks/theme-shortcut';
 
 type FontsDropdownMenuItemProps = {
   font: string;
@@ -38,7 +40,11 @@ function FontsDropdownMenuItem({
   );
 }
 
-export default function TextDropdownMenu() {
+export default function TextDropdownMenu({
+  showKeyboardShortcuts = false,
+}: {
+  showKeyboardShortcuts?: boolean;
+}) {
   const portalTarget = useContext(PortalTargetContext);
   const { activeDropdown, setActiveDropdown } = useContext(
     ActiveDropdownContext
@@ -48,6 +54,7 @@ export default function TextDropdownMenu() {
   const setFontAttribute = (font: Font) => {
     portalTarget?.setAttribute('data-body', font);
   };
+  useThemeShortcut('text', '5');
 
   return (
     <DropdownMenu
@@ -55,13 +62,16 @@ export default function TextDropdownMenu() {
       onOpenChange={(open) => setActiveDropdown(open ? 'text' : null)}
     >
       <DropdownMenuTrigger asChild>
-        <Button
-          variant='ghost'
-          size={'icon'}
-          className='data-[state=open]:bg-muted data-[state=open]:text-foreground'
-        >
-          <Type className='size-6' />
-        </Button>
+        <div className='relative'>
+          {showKeyboardShortcuts && <Keycap character='5' />}
+          <Button
+            variant='ghost'
+            size={'icon'}
+            className='data-[state=open]:bg-muted data-[state=open]:text-foreground'
+          >
+            <Type className='size-6' />
+          </Button>
+        </div>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent

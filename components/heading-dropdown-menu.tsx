@@ -1,15 +1,17 @@
+import Keycap from '@/components/keycap';
 import { Font, FONTS } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { Heading } from 'lucide-react';
 import { Button } from '~/components/ui/button';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { ActiveDropdownContext } from '~/hooks/active-dropdown-context';
+import { useThemeShortcut } from '~/hooks/theme-shortcut';
 import { useTheme } from '~/hooks/use-theme';
 
 type FontsDropdownMenuItemProps = {
@@ -39,7 +41,11 @@ function FontsDropdownMenuItem({
   );
 }
 
-export default function HeadingDropdownMenu() {
+export default function HeadingDropdownMenu({
+  showKeyboardShortcuts = false,
+}: {
+  showKeyboardShortcuts?: boolean;
+}) {
   const portalTarget = useContext(PortalTargetContext);
   const { activeDropdown, setActiveDropdown } = useContext(
     ActiveDropdownContext
@@ -49,6 +55,7 @@ export default function HeadingDropdownMenu() {
   const setFontAttribute = (font: Font) => {
     portalTarget?.setAttribute('data-headings', font);
   };
+  useThemeShortcut('heading', '4');
 
   return (
     <DropdownMenu
@@ -56,13 +63,16 @@ export default function HeadingDropdownMenu() {
       onOpenChange={(open) => setActiveDropdown(open ? 'heading' : null)}
     >
       <DropdownMenuTrigger asChild>
-        <Button
-          variant='ghost'
-          size={'icon'}
-          className='data-[state=open]:bg-muted data-[state=open]:text-foreground'
-        >
-          <Heading className='size-6' />
-        </Button>
+        <div className='relative'>
+          {showKeyboardShortcuts && <Keycap character='4' />}
+          <Button
+            variant='ghost'
+            size={'icon'}
+            className='data-[state=open]:bg-muted data-[state=open]:text-foreground'
+          >
+            <Heading className='size-6' />
+          </Button>
+        </div>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
