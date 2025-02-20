@@ -1,4 +1,4 @@
-export const DEFAULT_FONT = 'System UI';
+export const DEFAULT_FONT = 'Classical Humanist';
 export const FONTS = [
   'System UI',
   'Charter',
