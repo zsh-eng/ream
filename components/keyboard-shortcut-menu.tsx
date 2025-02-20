@@ -87,6 +87,15 @@ export default function KeyboardShortcutMenu({
             <p className='text-base text-foreground'>Scroll to top</p>
             <Keycap character='G' absolute={false} />
           </div>
+
+          <div className='flex items-center justify-between gap-2 w-full'>
+            <p className='text-base text-foreground'>Toggle reader mode</p>
+            <div className='flex items-center gap-2'>
+              <Keycap character='⌘' absolute={false} />
+              <Keycap character='⇧' absolute={false} />
+              <Keycap character='Y' absolute={false} />
+            </div>
+          </div>
         </div>
       </div>
     )
