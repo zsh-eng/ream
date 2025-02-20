@@ -18,9 +18,17 @@ async function handleCommand(tab: chrome.tabs.Tab) {
   });
 
   if (nextState === 'ON') {
-    await browser.tabs.sendMessage(tab.id!, { action: 'mount' });
+    try {
+      await browser.tabs.sendMessage(tab.id!, { action: 'mount' });
+    } catch (error) {
+      console.warn('Failed to send mount message:', error);
+    }
   } else {
-    await browser.tabs.sendMessage(tab.id!, { action: 'unmount' });
+    try {
+      await browser.tabs.sendMessage(tab.id!, { action: 'unmount' });
+    } catch (error) {
+      console.warn('Failed to send unmount message:', error);
+    }
   }
 
   return true;
