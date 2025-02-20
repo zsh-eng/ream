@@ -6,6 +6,7 @@ export default defineConfig({
   extensionApi: 'chrome',
   modules: ['@wxt-dev/module-react'],
   manifest: ({ browser }) => ({
+    name: 'Ream',
     permissions: ['activeTab', 'storage', 'scripting'],
     action: {}, // to allow us to trigger on click
     omnibox: {
