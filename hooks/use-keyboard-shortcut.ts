@@ -3,12 +3,20 @@ import { useEffect, useState } from 'react';
 import { useFontSize } from './use-font-size';
 import { useTheme } from './use-theme';
 
+function isModifiedKey(event: KeyboardEvent) {
+  return event.metaKey || event.ctrlKey || event.altKey;
+}
+
 export function useKeyboardShortcut() {
   const [isNavBarAutoHide, setIsNavBarAutoHide] = useState(false);
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (isModifiedKey(event)) {
+        return;
+      }
+
       if (event.key === 'h') {
         setIsNavBarAutoHide((prev) => !prev);
       } else if (event.key === '?') {
@@ -29,6 +37,10 @@ export function useFontSizeKeyboardShortcut(portalTarget: Element | null) {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (isModifiedKey(event)) {
+        return;
+      }
+
       if (event.key === '1') {
         if (size === SIZES[SIZES.length - 1]) {
           return;
@@ -52,20 +64,23 @@ export function useScrollKeyboardShortcut(portalTarget: Element | null) {
   useEffect(() => {
     if (!portalTarget) return;
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (isModifiedKey(event)) {
+        return;
+      }
+
       if (event.key === 'j') {
-        window.scrollBy({ top: 100, behavior: 'smooth' });
+        window.scrollBy({ top: 100 });
       } else if (event.key === 'k') {
-        window.scrollBy({ top: -100, behavior: 'smooth' });
+        window.scrollBy({ top: -100 });
       } else if (event.key === 'd') {
-        window.scrollBy({ top: window.innerHeight / 2, behavior: 'smooth' });
+        window.scrollBy({ top: window.innerHeight / 2 });
       } else if (event.key === 'u') {
-        window.scrollBy({ top: -window.innerHeight / 2, behavior: 'smooth' });
+        window.scrollBy({ top: -window.innerHeight / 2 });
       } else if (event.key === 'g') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0 });
       } else if (event.key === 'G') {
         window.scrollTo({
           top: portalTarget.scrollHeight,
-          behavior: 'smooth',
         });
       }
     };
