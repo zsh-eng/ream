@@ -28,9 +28,10 @@ async function handleCommand(tab: chrome.tabs.Tab) {
 
 export default defineBackground(() => {
   browser.action.onClicked.addListener(handleCommand);
-  browser.commands.onCommand.addListener((command, tab) => {
+  browser.commands.onCommand.addListener(async (command, tab) => {
     if (command === '_execute_action') {
-      handleCommand(tab);
+      return handleCommand(tab);
     }
+    return true;
   });
 });
