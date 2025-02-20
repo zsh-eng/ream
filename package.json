@@ -13,7 +13,10 @@
     "zip:firefox": "wxt zip -b firefox --mv3",
     "compile": "tsc --noEmit",
     "postinstall": "wxt prepare",
-    "generate-assets": "pwa-assets-generator"
+    "generate-assets": "pwa-assets-generator",
+    "web:dev": "vite",
+    "web:build": "tsc -b && vite build",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@mozilla/readability": "^0.5.0",
@@ -23,6 +26,8 @@
     "@types/turndown": "^5.0.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -32,6 +37,7 @@
     "turndown": "^7.2.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.20.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/chrome": "^0.0.280",
     "@types/node": "^22.13.4",
@@ -39,7 +45,11 @@
     "@types/react-dom": "^19.0.2",
     "@vite-pwa/assets-generator": "^0.2.6",
     "@wxt-dev/module-react": "^1.1.2",
+    "eslint": "^9.20.1",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0",
     "typescript": "^5.6.3",
+    "typescript-eslint": "^8.24.1",
     "wxt": "^0.19.13"
   }
 }

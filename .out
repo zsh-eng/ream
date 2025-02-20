@@ -1,0 +1,13 @@
+
+> ream@0.0.2 lint /Users/admin/ream
+> eslint .
+
+
+/Users/admin/ream/lib/favicon.ts
+  2:7  error  'favicon' is never reassigned. Use 'const' instead  prefer-const
+  7:7  error  'title' is never reassigned. Use 'const' instead    prefer-const
+
+✖ 2 problems (2 errors, 0 warnings)
+  2 errors and 0 warnings potentially fixable with the `--fix` option.
+
+ ELIFECYCLE  Command failed with exit code 1.
