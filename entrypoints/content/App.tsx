@@ -68,6 +68,17 @@ export default function App({ contentNode, title, author }: AppProps) {
     return SIZES[(index + 1 + SIZES.length) % SIZES.length] as FontSize;
   };
 
+  const [isNavBarAutoHide, setIsNavBarAutoHide] = useState(false);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'h') {
+        setIsNavBarAutoHide((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div className='w-full min-h-screen flex items-start bg-background py-16 animate-fadein'>
       <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground'></div>
@@ -95,13 +106,24 @@ export default function App({ contentNode, title, author }: AppProps) {
         )}
         <article className={cn('prose', size)} ref={articleRef} />
       </div>
-      <div className='fixed top-0 right-0 md:top-4 md:right-4 flex flex-col group'>
+
+      <div className='hover-trigger fixed top-0 right-0 h-full w-20 peer'></div>
+      <div
+        className={cn(
+          'fixed top-0 right-0 md:top-0 md:right-4 flex flex-col transition-all duration-300 py-4 h-screen',
+          // Display when either the hover-trigger or the navbar is hovered
+          'translate-x-40 translate-y-0 peer-hover:translate-x-0 hover:translate-x-0',
+          // Display when we're focusing on any of the dropdown menus
+          'has-data-[state=open]:translate-x-0',
+          !isNavBarAutoHide && 'translate-x-0'
+        )}
+      >
         <Button
           variant='ghost'
           size='icon'
           disabled={size === SIZES[SIZES.length - 1]}
           onClick={() => setSize(getNextSize(size as FontSize))}
-          className='translate-y-20 group-hover:translate-y-0 transition-transform duration-300'
+          className=''
         >
           <AArrowUp className='size-7' />
         </Button>
@@ -119,18 +141,18 @@ export default function App({ contentNode, title, author }: AppProps) {
         <ColorPaletteDropdownMenu />
         <HeadingDropdownMenu />
         <TextDropdownMenu />
-        <div className='flex-1'></div>
-      </div>
+        <div className='flex-1 h-full'></div>
 
-      <a
-        href={`https://archive.ph/timegate/${window.location.href}`}
-        target='_blank'
-        className='fixed bottom-0 right-0 md:bottom-4 md:right-4'
-      >
-        <Button variant='ghost' size='icon'>
-          <ArchiveIcon className='size-6' />
-        </Button>
-      </a>
+        <a
+          href={`https://archive.ph/timegate/${window.location.href}`}
+          target='_blank'
+          // className='fixed bottom-0 right-0 md:bottom-4 md:right-4'
+        >
+          <Button variant='ghost' size='icon'>
+            <ArchiveIcon className='size-6' />
+          </Button>
+        </a>
+      </div>
     </div>
   );
 }

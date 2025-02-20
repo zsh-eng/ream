@@ -126,7 +126,7 @@ export default function ColorPaletteDropdownMenu() {
       {colorPalettePopupVisible && (
         <div
           className={cn(
-            'absolute right-16 top-1 w-60 h-12 flex justify-center items-center bg-background text-foreground',
+            'absolute right-16 top-8 w-60 h-12 flex justify-center items-center bg-background text-foreground',
             'border-2 border-solid border-blue-300',
             isAnimatingOut ? 'animate-fadeout' : 'animate-fadein'
           )}
