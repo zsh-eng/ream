@@ -2,6 +2,7 @@ import { DropdownProvider } from '@/hooks/active-dropdown-context';
 import { THEME_ATTRIBUTES, ThemeAttribute } from '@/lib/theme';
 import { Readability } from '@mozilla/readability';
 import ReactDOM from 'react-dom/client';
+import { ContentScriptContext } from 'wxt/client';
 import { storage } from 'wxt/storage';
 import '~/assets/main.css';
 import App from '~/entrypoints/content/App.tsx';
@@ -16,6 +17,104 @@ async function applyThemeAttributes(portalTarget: HTMLElement) {
   }
 }
 
+async function setupThemeManagement(portalTarget: HTMLElement) {
+  await applyThemeAttributes(portalTarget);
+
+  const persistThemeChange = (mutationsList: MutationRecord[]) => {
+    for (const mutation of mutationsList) {
+      if (
+        mutation.type === 'attributes' &&
+        mutation.attributeName &&
+        THEME_ATTRIBUTES.includes(mutation.attributeName as ThemeAttribute)
+      ) {
+        const newValue = portalTarget.getAttribute(mutation.attributeName);
+        if (newValue) {
+          storage.setItem(`local:${mutation.attributeName}`, newValue);
+        }
+      }
+    }
+  };
+
+  const observer = new MutationObserver(persistThemeChange);
+  observer.observe(portalTarget, { attributes: true });
+  return observer;
+}
+
+async function createReaderUI(ctx: ContentScriptContext) {
+  const originalStylesheets = captureOriginalStylesheets();
+  const article = parseArticle();
+
+  document.body.style.display = 'none';
+  return createShadowRootUi(ctx, {
+    name: 'reader-mode',
+    position: 'inline',
+    anchor: 'body',
+    append: 'before',
+    onMount: (container, shadow) => {
+      const wrapper = document.createElement('div');
+      const portalTarget = shadow.querySelector('body');
+
+      if (!portalTarget) {
+        throw new Error('Portal target not found');
+      }
+
+      const observer = setupThemeManagement(portalTarget);
+      const root = ReactDOM.createRoot(wrapper);
+
+      root.render(
+        <PortalTargetContext.Provider value={portalTarget}>
+          <DropdownProvider>
+            <App
+              contentNode={article?.content}
+              title={article?.title}
+              author={article?.byline}
+            />
+          </DropdownProvider>
+        </PortalTargetContext.Provider>
+      );
+
+      container.append(wrapper);
+      return { root, wrapper, observer };
+    },
+    onRemove: async (elements) => {
+      const observer = await elements?.observer;
+      if (observer) {
+        observer.disconnect();
+      }
+      elements?.root.unmount();
+      elements?.wrapper.remove();
+      restoreOriginalStylesheets(originalStylesheets);
+      document.body.style.display = '';
+    },
+  });
+}
+
+function captureOriginalStylesheets() {
+  return [
+    ...Array.from(document.getElementsByTagName('style')),
+    ...Array.from(document.getElementsByTagName('link')).filter(
+      (link) => link.rel === 'stylesheet'
+    ),
+  ].map((element) => {
+    const clone = element.cloneNode(true) as HTMLStyleElement | HTMLLinkElement;
+    element.remove();
+    return clone;
+  });
+}
+
+function restoreOriginalStylesheets(stylesheets: HTMLStyleElement[]) {
+  stylesheets.forEach((style) => {
+    document.head.appendChild(style);
+  });
+}
+
+function parseArticle() {
+  const documentClone = document.cloneNode(true) as Document;
+  return new Readability(documentClone, {
+    serializer: (el) => el,
+  }).parse();
+}
+
 export default defineContentScript({
   registration: 'runtime',
   matches: [],
@@ -23,116 +122,16 @@ export default defineContentScript({
 
   async main(ctx) {
     let ui: Awaited<ReturnType<typeof createShadowRootUi>>;
-    let originalStylesheets: HTMLStyleElement[] = [];
 
-    const create = async () => {
-      originalStylesheets = [
-        ...Array.from(document.getElementsByTagName('style')),
-        ...Array.from(document.getElementsByTagName('link')).filter(
-          (link) => link.rel === 'stylesheet'
-        ),
-      ].map((element) => {
-        const clone = element.cloneNode(true) as
-          | HTMLStyleElement
-          | HTMLLinkElement;
-        element.remove();
-        return clone;
-      });
-
-      const documentClone = document.cloneNode(true) as Document;
-      const article = new Readability(documentClone, {
-        serializer: (el) => el,
-      }).parse();
-
-      document.body.style.display = 'none';
-      ui = await createShadowRootUi(ctx, {
-        name: 'reader-mode',
-        position: 'inline',
-        anchor: 'body',
-        append: 'before',
-        onMount: (container, shadow) => {
-          // Don't mount react app directly on <body>
-          const wrapper = document.createElement('div');
-
-          // To allow portals to target the shadow root
-          // See https://wxt.dev/guide/resources/faq.html#my-component-library-doesn-t-work-in-content-scripts
-          const portalTarget = shadow.querySelector('body');
-          if (!portalTarget) {
-            throw new Error('Portal target not found');
-          }
-
-          applyThemeAttributes(portalTarget);
-          const persistThemeChange = (mutationsList: MutationRecord[]) => {
-            for (const mutation of mutationsList) {
-              if (mutation.type !== 'attributes') {
-                return;
-              }
-
-              if (!mutation.attributeName) {
-                return;
-              }
-
-              if (
-                !THEME_ATTRIBUTES.includes(
-                  mutation.attributeName as ThemeAttribute
-                )
-              ) {
-                return;
-              }
-
-              const newValue = portalTarget.getAttribute(
-                mutation.attributeName ?? ''
-              );
-              if (!newValue) {
-                return;
-              }
-
-              storage.setItem(`local:${mutation.attributeName}`, newValue);
-            }
-          };
-
-          const observer = new MutationObserver(persistThemeChange);
-          const config = { attributes: true };
-          observer.observe(portalTarget, config);
-
-          const root = ReactDOM.createRoot(wrapper);
-          console.log(article?.content);
-          root.render(
-            <PortalTargetContext.Provider value={portalTarget}>
-              <DropdownProvider>
-                <App
-                  contentNode={article?.content}
-                  title={article?.title}
-                  author={article?.byline}
-                />
-              </DropdownProvider>
-            </PortalTargetContext.Provider>
-          );
-
-          container.append(wrapper);
-
-          return { root, wrapper };
-        },
-        onRemove: (elements) => {
-          elements?.root.unmount();
-          elements?.wrapper.remove();
-          originalStylesheets.forEach((style) => {
-            document.head.appendChild(style);
-          });
-          document.body.style.display = '';
-        },
-      });
-
-      ui.mount();
-    };
-
-    // Add message listener for unmounting
     browser.runtime.onMessage.addListener((message) => {
       if (message.action === 'unmount') {
-        ui.remove();
+        ui?.remove();
         return true;
       } else if (message.action === 'mount') {
-        create();
+        createReaderUI(ctx).then((newUi) => {
+          ui = newUi;
+          ui.mount();
+        });
         return true;
       }
     });
