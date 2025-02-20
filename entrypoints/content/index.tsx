@@ -67,6 +67,8 @@ async function createReaderUI(ctx: ContentScriptContext) {
               contentNode={article?.content}
               title={article?.title}
               author={article?.byline}
+              excerpt={article?.excerpt}
+              textContent={article?.textContent}
             />
           </DropdownProvider>
         </PortalTargetContext.Provider>

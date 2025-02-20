@@ -45,7 +45,7 @@ export default defineBackground(() => {
     ]);
   });
 
-  browser.omnibox.onInputEntered.addListener((text, disposition) => {
+  browser.omnibox.onInputEntered.addListener((text) => {
     const url = browser.runtime.getURL('/saved.html');
 
     if (text === 'https://archive.today') {
