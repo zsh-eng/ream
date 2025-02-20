@@ -8,6 +8,9 @@ export default defineConfig({
   manifest: ({ browser }) => ({
     permissions: ['activeTab', 'storage', 'scripting'],
     action: {}, // to allow us to trigger on click
+    omnibox: {
+      keyword: 'ream'
+    },
     web_accessible_resources: [
       {
         resources: ['content-scripts/content.js'],

@@ -34,4 +34,25 @@ export default defineBackground(() => {
     }
     return true;
   });
+
+  browser.omnibox.setDefaultSuggestion({
+    description: 'View saved articles',
+  });
+
+  browser.omnibox.onInputChanged.addListener((text, suggest) => {
+    suggest([
+      { content: 'https://archive.today', description: 'Archive.today' },
+    ]);
+  });
+
+  browser.omnibox.onInputEntered.addListener((text, disposition) => {
+    const url = browser.runtime.getURL('/saved.html');
+
+    if (text === 'https://archive.today') {
+      browser.tabs.create({ url: 'https://archive.today' });
+      return;
+    }
+
+    browser.tabs.create({ url: url });
+  });
 });
