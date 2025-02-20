@@ -47,3 +47,30 @@ export function useFontSizeKeyboardShortcut(portalTarget: Element | null) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [getNextSize, getPreviousSize, setSize, size]);
 }
+
+export function useScrollKeyboardShortcut(portalTarget: Element | null) {
+  useEffect(() => {
+    if (!portalTarget) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'j') {
+        window.scrollBy({ top: 100, behavior: 'smooth' });
+      } else if (event.key === 'k') {
+        window.scrollBy({ top: -100, behavior: 'smooth' });
+      } else if (event.key === 'd') {
+        window.scrollBy({ top: window.innerHeight / 2, behavior: 'smooth' });
+      } else if (event.key === 'u') {
+        window.scrollBy({ top: -window.innerHeight / 2, behavior: 'smooth' });
+      } else if (event.key === 'g') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (event.key === 'G') {
+        window.scrollTo({
+          top: portalTarget.scrollHeight,
+          behavior: 'smooth',
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [portalTarget]);
+}

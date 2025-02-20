@@ -5,6 +5,7 @@ import { useFontSize } from '@/hooks/use-font-size';
 import {
   useFontSizeKeyboardShortcut,
   useKeyboardShortcut,
+  useScrollKeyboardShortcut,
 } from '@/hooks/use-keyboard-shortcut';
 import { FontSize } from '@/lib/fonts';
 import { useContext, useEffect, useRef } from 'react';
@@ -41,6 +42,7 @@ export default function App({ contentNode, title, author }: AppProps) {
   const portalTarget = useContext(PortalTargetContext);
 
   useFontSizeKeyboardShortcut(portalTarget);
+  useScrollKeyboardShortcut(portalTarget);
   const { isNavBarAutoHide, showKeyboardShortcuts } = useKeyboardShortcut();
   const { setSize, getPreviousSize, getNextSize } = useFontSize(portalTarget);
 
