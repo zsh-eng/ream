@@ -1,4 +1,5 @@
 import { handleBookmarkMessage } from '@/lib/bookmark-messaging';
+import { getArticles } from '@/lib/memory';
 
 async function handleCommand(tab: chrome.tabs.Tab) {
   if (!tab.id) {
@@ -50,9 +51,16 @@ export default defineBackground(() => {
   });
 
   browser.omnibox.onInputChanged.addListener((text, suggest) => {
-    suggest([
-      { content: 'https://archive.today', description: 'Archive.today' },
-    ]);
+    const articles = getArticles().filter((article) =>
+      article.title.toLowerCase().includes(text.toLowerCase())
+    );
+
+    suggest(
+      articles.map((article) => ({
+        content: article.url,
+        description: article.title,
+      }))
+    );
   });
 
   browser.omnibox.onInputEntered.addListener((text) => {
