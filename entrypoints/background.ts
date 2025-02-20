@@ -1,3 +1,5 @@
+import { handleBookmarkMessage } from '@/lib/bookmark-messaging';
+
 async function handleCommand(tab: chrome.tabs.Tab) {
   if (!tab.id) {
     return true;
@@ -62,5 +64,11 @@ export default defineBackground(() => {
     }
 
     browser.tabs.create({ url: url });
+  });
+
+  browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    handleBookmarkMessage(message, sendResponse);
+    // keep the message port open as we're doing this async
+    return true;
   });
 });

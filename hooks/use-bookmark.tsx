@@ -1,15 +1,22 @@
-import { ReamDB } from '@/lib/db';
-import { useLiveQuery } from 'dexie-react-hooks';
+import {
+    AddBookmarkMessage,
+    CheckBookmarkMessage,
+    DeleteBookmarkMessage,
+} from '@/lib/bookmark-messaging';
+import { useEffect, useState } from 'react';
 
 const useBookmark = (url: string) => {
-  const bookmarked = useLiveQuery(
-    async () => {
-      const article = await ReamDB.articles.get(url);
-      return !!article;
-    },
-    [url],
-    false
-  );
+  const [bookmarked, setBookmarked] = useState(false);
+
+  useEffect(() => {
+    const checkMessage: CheckBookmarkMessage = {
+      type: 'CHECK_BOOKMARK',
+      url,
+    };
+    browser.runtime.sendMessage(checkMessage, (response) => {
+      setBookmarked(response.bookmarked);
+    });
+  }, [url]);
 
   const onBookmark = useCallback(
     async ({
@@ -24,13 +31,21 @@ const useBookmark = (url: string) => {
       content: string;
     }) => {
       if (bookmarked) {
-        console.log('deleting', url);
-        await ReamDB.articles.delete(url);
+        const deleteMessage: DeleteBookmarkMessage = {
+          type: 'DELETE_BOOKMARK',
+          url,
+        };
+        browser.runtime.sendMessage(deleteMessage, () => {
+          setBookmarked(false);
+        });
       } else {
-        await Promise.all([
-          ReamDB.articles.add({ url, title, excerpt }),
-          ReamDB.articleContents.add({ url, content }),
-        ]);
+        const addMessage: AddBookmarkMessage = {
+          type: 'ADD_BOOKMARK',
+          data: { url, title, excerpt, content },
+        };
+        browser.runtime.sendMessage(addMessage, () => {
+          setBookmarked(true);
+        });
       }
     },
     [bookmarked, url]
