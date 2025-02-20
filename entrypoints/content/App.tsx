@@ -29,9 +29,7 @@ function extractContentElements(contentNode: Node) {
       : [child]
   );
   const articleChildren = readabilityPageChildren.flatMap((child) =>
-    child.tagName === 'ARTICLE'
-      ? Array.from(child.children)
-      : [child]
+    child.tagName === 'ARTICLE' ? Array.from(child.children) : [child]
   );
   return articleChildren;
 }
@@ -90,19 +88,22 @@ export default function App({ contentNode, title, author }: AppProps) {
         {author && (
           <div className='mb-6 flex gap-2 items-center'>
             <img src={faviconUrl} alt={'favicon'} className='w-5 h-5' />
-            <div className='uppercase text-muted-foreground'>{author}</div>
+            <div className='uppercase text-muted-foreground line-clamp-1 overflow-ellipsis'>
+              {author}
+            </div>
           </div>
         )}
         <article className={cn('prose', size)} ref={articleRef} />
       </div>
-      <div className='fixed top-0 right-0 md:top-4 md:right-4 flex flex-col'>
+      <div className='fixed top-0 right-0 md:top-4 md:right-4 flex flex-col group'>
         <Button
           variant='ghost'
           size='icon'
           disabled={size === SIZES[SIZES.length - 1]}
           onClick={() => setSize(getNextSize(size as FontSize))}
+          className='translate-y-20 group-hover:translate-y-0 transition-transform duration-300'
         >
-          <AArrowUp className='size-6' />
+          <AArrowUp className='size-7' />
         </Button>
         <Button
           variant='ghost'
@@ -112,7 +113,7 @@ export default function App({ contentNode, title, author }: AppProps) {
             setSize(getPreviousSize(size as FontSize));
           }}
         >
-          <AArrowDown className='size-6' />
+          <AArrowDown className='size-7' />
         </Button>
 
         <ColorPaletteDropdownMenu />
