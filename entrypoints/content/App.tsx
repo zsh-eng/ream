@@ -1,3 +1,4 @@
+import KeyboardShortcutMenu from '@/components/keyboard-shortcut-menu';
 import { MainContent } from '@/components/main-content';
 import { NavigationBar } from '@/components/navigation-bar';
 import { useFontSize } from '@/hooks/use-font-size';
@@ -64,6 +65,10 @@ export default function App({ contentNode, title, author }: AppProps) {
         author={author}
         size={size}
         articleRef={articleRef}
+      />
+
+      <KeyboardShortcutMenu
+        showKeyboardShortcuts={showKeyboardShortcuts}
       />
 
       <NavigationBar
