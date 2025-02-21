@@ -2,18 +2,27 @@ import { ArticleContent } from '@/components/article-content';
 import NavigationAndShorcutsContainer from '@/components/navigation-and-shortcuts';
 import { Button } from '@/components/ui/button';
 import useBookmark from '@/hooks/use-bookmark';
+import { getCurrentPageFaviconUrl } from '@/lib/favicon';
 import { stripQueryParams } from '@/lib/utils';
 import { BookmarkIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTheme } from '~/hooks/use-theme';
 
+type ReadabilityContent = {
+  title: string;
+  length: number;
+  excerpt: string;
+  byline: string;
+  dir: string;
+  siteName: string;
+  lang: string;
+  publishedTime: string;
+  content: Node;
+  textContent: string;
+};
+
 type AppProps = {
-  // markdown: string;
-  title?: string;
-  contentNode?: Node;
-  author?: string;
-  excerpt?: string;
-  textContent?: string;
+  article: ReadabilityContent;
 };
 
 // The top level is .readability-content
@@ -33,13 +42,8 @@ function extractContentElements(contentNode: Node) {
   return articleChildren;
 }
 
-export default function App({
-  contentNode,
-  title,
-  author,
-  excerpt,
-  textContent,
-}: AppProps) {
+export default function App({ article }: AppProps) {
+  const { content: contentNode, title, byline, textContent } = article;
   const articleRef = useRef<HTMLDivElement>(null);
   const { 'data-size': size } = useTheme();
 
@@ -56,6 +60,7 @@ export default function App({
   }, [contentNode]);
 
   const { bookmarked, onBookmark } = useBookmark(window.location.href);
+  const faviconUrl = getCurrentPageFaviconUrl();
 
   return (
     <>
@@ -64,7 +69,7 @@ export default function App({
 
         <ArticleContent
           title={title}
-          author={author}
+          author={byline}
           size={size}
           articleRef={articleRef}
         />
@@ -75,14 +80,18 @@ export default function App({
           <Button
             variant='ghost'
             size='icon'
-            onClick={() =>
+            onClick={() => {
+              if (!articleRef.current) return;
+
+              const html = articleRef.current.innerHTML;
               onBookmark({
+                ...article,
                 url: stripQueryParams(window.location.href),
-                title: title ?? '',
-                excerpt: excerpt ?? '',
-                content: textContent ?? '',
-              })
-            }
+                faviconUrl,
+                content: textContent,
+                html,
+              });
+            }}
           >
             <BookmarkIcon
               className='size-6'

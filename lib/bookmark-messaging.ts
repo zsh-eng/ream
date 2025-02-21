@@ -1,4 +1,4 @@
-import { ReamDB } from '@/lib/db';
+import { ArticleToAdd, ReamDB } from '@/lib/db';
 
 // This file contains the messages and responses for the bookmark feature
 // It is necessary because the content script will create the DB in the
@@ -13,12 +13,7 @@ export type CheckBookmarkMessage = {
 
 export type AddBookmarkMessage = {
   type: 'ADD_BOOKMARK';
-  data: {
-    url: string;
-    title: string;
-    excerpt: string;
-    content: string;
-  };
+  data: ArticleToAdd;
 };
 
 export type DeleteBookmarkMessage = {
@@ -69,12 +64,25 @@ export function handleBookmarkMessage(
     Promise.all([
       ReamDB.articles.add({
         url: message.data.url,
+        createdAt: Date.now(),
+
+        faviconUrl: message.data.faviconUrl,
         title: message.data.title,
+        length: message.data.length,
         excerpt: message.data.excerpt,
+        byline: message.data.byline,
+        dir: message.data.dir,
+        siteName: message.data.siteName,
+        lang: message.data.lang,
+        publishedTime: message.data.publishedTime,
       }),
-      ReamDB.articleContents.add({
+      ReamDB.articleTexts.add({
         url: message.data.url,
-        content: message.data.content,
+        content: message.data.textContent,
+      }),
+      ReamDB.articleHtmls.add({
+        url: message.data.url,
+        html: message.data.html,
       }),
     ]).then(() =>
       sendResponse({
@@ -88,7 +96,8 @@ export function handleBookmarkMessage(
   if (message.type === 'DELETE_BOOKMARK') {
     Promise.all([
       ReamDB.articles.delete(message.url!),
-      ReamDB.articleContents.delete(message.url!),
+      ReamDB.articleTexts.delete(message.url!),
+      ReamDB.articleHtmls.delete(message.url!),
     ]).then(() =>
       sendResponse({
         type: 'DELETE_BOOKMARK_RESPONSE',

@@ -3,7 +3,8 @@ import {
     CheckBookmarkMessage,
     DeleteBookmarkMessage,
 } from '@/lib/bookmark-messaging';
-import { useEffect, useState } from 'react';
+import { ArticleToAdd } from '@/lib/db';
+import { useCallback, useEffect, useState } from 'react';
 
 const useBookmark = (url: string) => {
   const [bookmarked, setBookmarked] = useState(false);
@@ -19,17 +20,7 @@ const useBookmark = (url: string) => {
   }, [url]);
 
   const onBookmark = useCallback(
-    async ({
-      url,
-      title,
-      excerpt,
-      content,
-    }: {
-      url: string;
-      title: string;
-      excerpt: string;
-      content: string;
-    }) => {
+    async (data: ArticleToAdd) => {
       if (bookmarked) {
         const deleteMessage: DeleteBookmarkMessage = {
           type: 'DELETE_BOOKMARK',
@@ -41,7 +32,7 @@ const useBookmark = (url: string) => {
       } else {
         const addMessage: AddBookmarkMessage = {
           type: 'ADD_BOOKMARK',
-          data: { url, title, excerpt, content },
+          data,
         };
         browser.runtime.sendMessage(addMessage, () => {
           setBookmarked(true);

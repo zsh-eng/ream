@@ -8,7 +8,7 @@ export default function SavedArticlePage({ url }: { url: string }) {
   const article = useLiveQuery(
     async () => {
       const article = await ReamDB.articles.get(url);
-      const contents = await ReamDB.articleContents.get(url);
+      const contents = await ReamDB.articleTexts.get(url);
       if (!article || !contents) {
         return null;
       }

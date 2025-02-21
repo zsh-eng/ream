@@ -11,6 +11,12 @@ async function createReaderUI(ctx: ContentScriptContext) {
   const originalStylesheets = captureOriginalStylesheets();
   const article = parseArticle();
 
+  // TODO: Nicer toast for failing to parse the given article
+  if (!article) {
+    alert('Failed to parse article');
+    return;
+  }
+
   document.body.style.display = 'none';
   return createShadowRootUi(ctx, {
     name: 'reader-mode',
@@ -31,13 +37,7 @@ async function createReaderUI(ctx: ContentScriptContext) {
       root.render(
         <PortalTargetContext.Provider value={portalTarget}>
           <DropdownProvider>
-            <App
-              contentNode={article?.content}
-              title={article?.title}
-              author={article?.byline}
-              excerpt={article?.excerpt}
-              textContent={article?.textContent}
-            />
+            <App article={article} />
           </DropdownProvider>
         </PortalTargetContext.Provider>
       );
@@ -90,7 +90,7 @@ export default defineContentScript({
   cssInjectionMode: 'ui',
 
   async main(ctx) {
-    let ui: Awaited<ReturnType<typeof createShadowRootUi>>;
+    let ui: Awaited<ReturnType<typeof createShadowRootUi>> | undefined;
 
     browser.runtime.onMessage.addListener((message) => {
       if (message.action === 'unmount') {
@@ -99,7 +99,7 @@ export default defineContentScript({
       } else if (message.action === 'mount') {
         createReaderUI(ctx).then((newUi) => {
           ui = newUi;
-          ui.mount();
+          ui?.mount();
         });
         return true;
       }
