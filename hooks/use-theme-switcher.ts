@@ -30,7 +30,7 @@ export function useThemeSwitcher(
     visibleTimeoutRef.current = setTimeout(() => {
       setIsPopupVisible(false);
       setIsAnimatingOut(false);
-    }, 1000);
+    }, 900);
   };
 
   useEffect(() => {
