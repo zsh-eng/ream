@@ -1,3 +1,5 @@
+import { DEFAULT_FONT } from '@/lib/fonts';
+
 export const DEFAULT_COLOR_PALETTE = 'flexoki-light' as const;
 export const COLOR_PALETTE_OPTIONS = [
   'flexoki-light',
@@ -31,3 +33,10 @@ export function getPreviousColorPalette(currentColorPalette: ColorPalette) {
     (index - 1 + COLOR_PALETTE_OPTIONS.length) % COLOR_PALETTE_OPTIONS.length
   ];
 }
+
+export const DEFAULT_THEME_ATTRIBUTES: Record<ThemeAttribute, string> = {
+  'data-color-palette': DEFAULT_COLOR_PALETTE,
+  'data-headings': DEFAULT_FONT,
+  'data-body': DEFAULT_FONT,
+  'data-size': 'prose-xl',
+};
