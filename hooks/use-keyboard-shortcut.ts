@@ -106,14 +106,16 @@ export function useScrollKeyboardShortcut(portalTarget: Element | null) {
       }
 
       if (event.key === 'j') {
-        window.scrollBy({ top: 100 });
+        window.scrollBy({ top: 100, behavior: 'smooth' });
       } else if (event.key === 'k') {
-        window.scrollBy({ top: -100 });
+        window.scrollBy({ top: -100, behavior: 'smooth' });
       } else if (event.key === 'd') {
-        window.scrollBy({ top: window.innerHeight / 2 });
+        window.scrollBy({ top: window.innerHeight / 2, behavior: 'smooth' });
       } else if (event.key === 'u') {
-        window.scrollBy({ top: -window.innerHeight / 2 });
+        window.scrollBy({ top: -window.innerHeight / 2, behavior: 'smooth' });
       } else if (event.key === 'g') {
+        // Scrolling to top or bottom has too big of a jump,
+        // so animating is a bit annoying and slow
         window.scrollTo({ top: 0 });
       } else if (event.key === 'G') {
         window.scrollTo({
