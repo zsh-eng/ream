@@ -11,8 +11,9 @@ export default function ArticlesPage() {
     return ReamDB.articles.toArray();
   });
 
-  const [dateSort, setDateSort] = useState<'asc' | 'desc'>('desc');
+  const [dateSort, setDateSort] = useState<'asc' | 'desc' | null>('desc');
   const [search, setSearch] = useState('');
+
   const sortedArticles = useMemo(() => {
     return articles?.sort((a, b) => {
       return dateSort === 'asc'
