@@ -17,7 +17,7 @@ export function ThemeSwitchPopup({
   return createPortal(
     <div
       className={cn(
-        'fixed left-4 top-4 w-60 h-12 flex justify-center items-center bg-background text-foreground',
+        'fixed left-4 top-4 w-60 h-12 flex justify-center items-center bg-background text-foreground text-base',
         'border-2 border-solid border-blue-300',
         isAnimatingOut ? 'animate-fadeout' : 'animate-fadein'
       )}

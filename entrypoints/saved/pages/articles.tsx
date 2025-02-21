@@ -93,7 +93,7 @@ export default function ArticlesPage() {
                 ref={inputRef}
                 type='text'
                 placeholder='Search...'
-                className='w-full py-2 px-3 text-lg rounded-none focus:outline-none border border-solid border-muted focus:border-muted-foreground transition-all'
+                className='w-full py-2 px-3 text-lg rounded-none focus:outline-none border border-solid border-muted focus:border-muted-foreground focus:transition-colors'
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(e) => {
@@ -130,7 +130,7 @@ export default function ArticlesPage() {
                 <div
                   className={cn(
                     'bg-muted p-4 cursor-pointer border border-solid border-transparent',
-                    'hover:border-foreground hover:scale-[101%] transition-all'
+                    'hover:border-foreground hover:scale-[101%] transition-transform'
                   )}
                 >
                   <div className='text-xl'>{article.title}</div>
