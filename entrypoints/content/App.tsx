@@ -1,4 +1,4 @@
-import { MainContent } from '@/components/main-content';
+import { ArticleContent } from '@/components/article-content';
 import NavigationAndShorcutsContainer from '@/components/navigation-and-shortcuts';
 import { useEffect, useRef } from 'react';
 import { useTheme } from '~/hooks/use-theme';
@@ -56,7 +56,7 @@ export default function App({
       <div className='w-full min-h-screen flex items-start bg-background py-16 animate-fadein'>
         <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground' />
 
-        <MainContent
+        <ArticleContent
           title={title}
           author={author}
           size={size}

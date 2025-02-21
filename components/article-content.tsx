@@ -6,10 +6,10 @@ type MainContentProps = {
   title?: string;
   author?: string;
   size: string;
-  articleRef: RefObject<HTMLDivElement | null>;
+  articleRef?: RefObject<HTMLDivElement | null>;
 };
 
-export function MainContent({
+export function ArticleContent({
   title,
   author,
   size,

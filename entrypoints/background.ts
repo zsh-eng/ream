@@ -64,14 +64,15 @@ export default defineBackground(() => {
   });
 
   browser.omnibox.onInputEntered.addListener((text) => {
-    const url = browser.runtime.getURL('/saved.html');
-
-    if (text === 'https://archive.today') {
-      browser.tabs.create({ url: `${url}#/saved` });
+    if (!text || text === 'View saved articles') {
+      const url = browser.runtime.getURL('/saved.html');
+      browser.tabs.create({ url });
       return;
     }
 
-    browser.tabs.create({ url: url });
+    const encodedUrl = encodeURIComponent(text);
+    const url = browser.runtime.getURL('/saved.html') + '#/article/' + encodedUrl;
+    browser.tabs.create({ url });
   });
 
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
