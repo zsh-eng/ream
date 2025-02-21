@@ -5,7 +5,7 @@ import TextDropdownMenu from '@/components/text-dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { SIZES } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
-import { AArrowDown, AArrowUp, BookmarkIcon } from 'lucide-react';
+import { AArrowDown, AArrowUp } from 'lucide-react';
 
 type NavigationBarProps = {
   size: string;
@@ -13,8 +13,8 @@ type NavigationBarProps = {
   showKeyboardShortcuts: boolean;
   onSizeIncrease: () => void;
   onSizeDecrease: () => void;
-  bookmarked: boolean;
-  onBookmark: (bookmark: boolean) => void;
+  /** Render props for additional action buttons in the navigation bar */
+  renderActionButtons?: () => React.ReactNode;
 };
 
 export function NavigationBar({
@@ -23,8 +23,7 @@ export function NavigationBar({
   showKeyboardShortcuts,
   onSizeIncrease,
   onSizeDecrease,
-  bookmarked,
-  onBookmark,
+  renderActionButtons,
 }: NavigationBarProps) {
   return (
     <>
@@ -69,17 +68,8 @@ export function NavigationBar({
         <TextDropdownMenu showKeyboardShortcuts={showKeyboardShortcuts} />
         <div className='flex-1 h-full' />
 
-        <Button
-          variant='ghost'
-          size='icon'
-          onClick={() => onBookmark(!bookmarked)}
-        >
-          <BookmarkIcon
-            className='size-6'
-            fill={bookmarked ? 'currentColor' : 'none'}
-            strokeWidth={bookmarked ? 0 : 2}
-          />
-        </Button>
+        {renderActionButtons?.()}
+
       </div>
     </>
   );

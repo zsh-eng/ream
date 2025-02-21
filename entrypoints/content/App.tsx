@@ -1,5 +1,9 @@
 import { ArticleContent } from '@/components/article-content';
 import NavigationAndShorcutsContainer from '@/components/navigation-and-shortcuts';
+import { Button } from '@/components/ui/button';
+import useBookmark from '@/hooks/use-bookmark';
+import { stripQueryParams } from '@/lib/utils';
+import { BookmarkIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTheme } from '~/hooks/use-theme';
 
@@ -51,6 +55,8 @@ export default function App({
     });
   }, [contentNode]);
 
+  const { bookmarked, onBookmark } = useBookmark(window.location.href);
+
   return (
     <>
       <div className='w-full min-h-screen flex items-start bg-background py-16 animate-fadein'>
@@ -65,9 +71,26 @@ export default function App({
       </div>
 
       <NavigationAndShorcutsContainer
-        title={title}
-        excerpt={excerpt}
-        textContent={textContent}
+        renderActionButtons={() => (
+          <Button
+            variant='ghost'
+            size='icon'
+            onClick={() =>
+              onBookmark({
+                url: stripQueryParams(window.location.href),
+                title: title ?? '',
+                excerpt: excerpt ?? '',
+                content: textContent ?? '',
+              })
+            }
+          >
+            <BookmarkIcon
+              className='size-6'
+              fill={bookmarked ? 'currentColor' : 'none'}
+              strokeWidth={bookmarked ? 0 : 2}
+            />
+          </Button>
+        )}
       />
     </>
   );

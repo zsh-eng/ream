@@ -36,11 +36,7 @@ export default function SavedArticlePage({ url }: { url: string }) {
         <ArticleContent title={article.title} author={''} size={size} />
       </div>
 
-      <NavigationAndShorcutsContainer
-        title={article.title}
-        excerpt={article.excerpt}
-        textContent={article.content}
-      />
+      <NavigationAndShorcutsContainer />
     </>
   );
 }
