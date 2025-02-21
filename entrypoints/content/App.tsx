@@ -72,6 +72,7 @@ export default function App({ article }: AppProps) {
           author={byline}
           size={size}
           articleRef={articleRef}
+          faviconUrl={faviconUrl}
         />
       </div>
 

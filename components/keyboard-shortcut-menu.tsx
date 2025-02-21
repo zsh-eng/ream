@@ -22,7 +22,7 @@ export default function KeyboardShortcutMenu({
   return createPortal(
     <div
       className={cn(
-        'fixed top-18 left-4 h-fit w-80 flex flex-col gap-2 items-start border border-solid border-foreground p-4 bg-background animate-fadein-fast',
+        'fixed top-18 left-4 h-fit w-80 flex flex-col gap-2 items-start border border-solid border-foreground p-4 bg-background animate-fadein-fast z-30',
         'max-h-[calc(100%-80px)] overflow-y-auto'
       )}
     >

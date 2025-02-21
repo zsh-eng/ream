@@ -1,4 +1,3 @@
-import { getCurrentPageFaviconUrl } from '@/lib/favicon';
 import { cn } from '@/lib/utils';
 import { RefObject } from 'react';
 
@@ -7,6 +6,7 @@ type MainContentProps = {
   author?: string;
   size: string;
   articleRef?: RefObject<HTMLDivElement | null>;
+  faviconUrl?: string;
 };
 
 export function ArticleContent({
@@ -14,9 +14,8 @@ export function ArticleContent({
   author,
   size,
   articleRef,
+  faviconUrl,
 }: MainContentProps) {
-  const faviconUrl = getCurrentPageFaviconUrl();
-
   return (
     <div className='max-w-2xl px-4'>
       <div className='flex items-center gap-1 mb-2' />
