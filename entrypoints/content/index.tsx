@@ -1,43 +1,11 @@
 import { DropdownProvider } from '@/hooks/active-dropdown-context';
-import { THEME_ATTRIBUTES, ThemeAttribute } from '@/lib/theme';
+import { setupThemeManagement } from '@/lib/shell';
 import { Readability } from '@mozilla/readability';
 import ReactDOM from 'react-dom/client';
 import { ContentScriptContext } from 'wxt/client';
-import { storage } from 'wxt/storage';
 import '~/assets/main.css';
 import App from '~/entrypoints/content/App.tsx';
 import { PortalTargetContext } from '~/hooks/portal-target-context.tsx';
-
-async function applyThemeAttributes(portalTarget: HTMLElement) {
-  for (const attribute of THEME_ATTRIBUTES) {
-    const value = await storage.getItem(`local:${attribute}`);
-    if (typeof value === 'string') {
-      portalTarget.setAttribute(attribute, value);
-    }  }
-}
-
-async function setupThemeManagement(portalTarget: HTMLElement) {
-  await applyThemeAttributes(portalTarget);
-
-  const persistThemeChange = (mutationsList: MutationRecord[]) => {
-    for (const mutation of mutationsList) {
-      if (
-        mutation.type === 'attributes' &&
-        mutation.attributeName &&
-        THEME_ATTRIBUTES.includes(mutation.attributeName as ThemeAttribute)
-      ) {
-        const newValue = portalTarget.getAttribute(mutation.attributeName);
-        if (newValue) {
-          storage.setItem(`local:${mutation.attributeName}`, newValue);
-        }
-      }
-    }
-  };
-
-  const observer = new MutationObserver(persistThemeChange);
-  observer.observe(portalTarget, { attributes: true });
-  return observer;
-}
 
 async function createReaderUI(ctx: ContentScriptContext) {
   const originalStylesheets = captureOriginalStylesheets();
