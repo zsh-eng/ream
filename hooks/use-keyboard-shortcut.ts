@@ -1,5 +1,5 @@
 import { FontSize, SIZES } from '@/lib/fonts';
-import { useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 import { useFontSize } from './use-font-size';
 import { useTheme } from './use-theme';
 
@@ -125,4 +125,25 @@ export function useScrollKeyboardShortcut(portalTarget: Element | null) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [portalTarget]);
+}
+
+export function useFocusSearchBar(
+  inputRef: RefObject<HTMLInputElement | null>
+) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isModifiedKey(event)) {
+        return;
+      }
+
+      if (event.key === '/') {
+        inputRef.current?.focus();
+        event.preventDefault();
+        return;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [inputRef]);
 }

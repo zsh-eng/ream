@@ -15,6 +15,11 @@ import { useTheme } from '~/hooks/use-theme';
 type NavigationAndShortcutsProps = {
   /** Additional action buttons to render in the navigation bar */
   renderActionButtons?: () => React.ReactNode;
+  additionalShortcuts?: {
+    id: string;
+    characters: string[];
+    description: string;
+  }[];
 };
 
 // Groups the keyboard shortcuts and navigation bar functionality
@@ -24,6 +29,7 @@ type NavigationAndShortcutsProps = {
 // group them together so that we can reuse this theming logic.
 export default function NavigationAndShorcutsContainer({
   renderActionButtons,
+  additionalShortcuts,
 }: NavigationAndShortcutsProps) {
   const portalTarget = useContext(PortalTargetContext);
 
@@ -39,6 +45,7 @@ export default function NavigationAndShorcutsContainer({
       <KeyboardShortcutMenu
         showKeyboardShortcuts={isKeyboardShortcutMenuVisible}
         portalTarget={portalTarget}
+        additionalShortcuts={additionalShortcuts}
       />
 
       <NavigationBar

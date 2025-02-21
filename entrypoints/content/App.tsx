@@ -25,6 +25,14 @@ type AppProps = {
   article: ReadabilityContent;
 };
 
+const additionalShortcuts = [
+  {
+    id: 'toggle-reader-mode',
+    characters: ['⇧', '⌘', 'Y'],
+    description: 'Toggle reader mode',
+  },
+];
+
 // The top level is .readability-content
 // Which might be wrapped by .readability-page if the library detects pages present
 // This might be further wrapped by article tags
@@ -77,6 +85,7 @@ export default function App({ article }: AppProps) {
       </div>
 
       <NavigationAndShorcutsContainer
+        additionalShortcuts={additionalShortcuts}
         renderActionButtons={() => (
           <Button
             variant='ghost'

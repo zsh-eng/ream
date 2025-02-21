@@ -5,11 +5,17 @@ import { createPortal } from 'react-dom';
 type KeyboardShortcutMenuProps = {
   showKeyboardShortcuts: boolean;
   portalTarget: Element | null;
+  additionalShortcuts?: {
+    id: string;
+    characters: string[];
+    description: string;
+  }[];
 };
 
 export default function KeyboardShortcutMenu({
   showKeyboardShortcuts,
   portalTarget,
+  additionalShortcuts,
 }: KeyboardShortcutMenuProps) {
   if (!showKeyboardShortcuts) {
     return null;
@@ -96,14 +102,21 @@ export default function KeyboardShortcutMenu({
           <Keycap character='G' absolute={false} />
         </div>
 
-        <div className='flex items-center justify-between gap-2 w-full'>
-          <p className='text-base text-foreground'>Toggle reader mode</p>
-          <div className='flex items-center gap-2'>
-            <Keycap character='⌘' absolute={false} />
-            <Keycap character='⇧' absolute={false} />
-            <Keycap character='Y' absolute={false} />
+        {additionalShortcuts?.map((shortcut) => (
+          <div
+            className='flex items-center justify-between gap-2 w-full'
+            key={shortcut.id}
+          >
+            <p className='text-base text-foreground'>{shortcut.description}</p>
+            {shortcut.characters.map((character) => (
+              <Keycap
+                key={shortcut.id + character}
+                character={character}
+                absolute={false}
+              />
+            ))}
           </div>
-        </div>
+        ))}
       </div>
     </div>,
     portalTarget

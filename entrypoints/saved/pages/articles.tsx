@@ -1,11 +1,21 @@
 import NavigationAndShorcutsContainer from '@/components/navigation-and-shortcuts';
 import { Button } from '@/components/ui/button';
+import { useFocusSearchBar } from '@/hooks/use-keyboard-shortcut';
 import { ReamDB } from '@/lib/db';
 import { cn } from '@/lib/utils';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { CalendarArrowDown, CalendarArrowUp, LinkIcon } from 'lucide-react';
+import { CalendarArrowDown, CalendarArrowUp, LinkIcon, X } from 'lucide-react';
 import MiniSearch from 'minisearch';
+import { useRef } from 'react';
 import { Link } from 'wouter';
+
+const additionalShortcuts = [
+  {
+    id: 'focus-search',
+    characters: ['/'],
+    description: 'Focus on the search bar',
+  },
+];
 
 export default function ArticlesPage() {
   const articles = useLiveQuery(async () => {
@@ -40,6 +50,8 @@ export default function ArticlesPage() {
   );
 
   const articlesToDisplay = search ? searchResults : sortedArticles;
+  const inputRef = useRef<HTMLInputElement>(null);
+  useFocusSearchBar(inputRef);
 
   return (
     <>
@@ -48,7 +60,7 @@ export default function ArticlesPage() {
         <div className='flex flex-col gap-0 max-w-2xl'>
           <div
             className={cn(
-              'flex flex-col gap-0 sticky top-0 bg-background z-20 py-6',
+              'flex flex-col gap-0 sticky top-0 bg-background z-20 pt-6 pb-2',
               // Ensure that the stick covers the scaled up version of the article card
               'before:absolute before:content-[""] before:bg-background before:h-full before:w-[200px] before:right-full before:top-0 after:absolute after:content-[""] after:bg-background after:h-full after:w-[200px] after:left-full after:top-0',
               'w-[var(--container-2xl)]'
@@ -76,20 +88,40 @@ export default function ArticlesPage() {
               )}
             </div>
 
-            <div className='mt-4'>
+            <div className='mt-2 relative'>
               <input
+                ref={inputRef}
                 type='text'
                 placeholder='Search...'
                 className='w-full py-2 px-3 text-lg rounded-none focus:outline-none border border-solid border-muted focus:border-muted-foreground transition-all'
+                value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(e) => {
+                  if (e.key === 'Escape') {
+                    inputRef.current?.blur();
+                  }
+
                   e.stopPropagation();
                 }}
               />
+              <div className='absolute top-1/2 -translate-y-1/2 right-1'>
+                {search && (
+                  <Button
+                    variant='ghost'
+                    size='icon'
+                    className='size-10 cursor-pointer hover:bg-transparent'
+                    onClick={() => {
+                      setSearch('');
+                    }}
+                  >
+                    <X className='size-5' />
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
 
-          <div className='flex flex-col gap-1'>
+          <div className='flex flex-col gap-1 mt-4'>
             {articlesToDisplay?.map((article) => (
               <Link
                 key={article.url}
@@ -118,7 +150,9 @@ export default function ArticlesPage() {
         </div>
       </div>
 
-      <NavigationAndShorcutsContainer />
+      <NavigationAndShorcutsContainer
+        additionalShortcuts={additionalShortcuts}
+      />
     </>
   );
 }
