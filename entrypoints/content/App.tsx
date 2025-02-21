@@ -1,17 +1,6 @@
-import KeyboardShortcutMenu from '@/components/keyboard-shortcut-menu';
 import { MainContent } from '@/components/main-content';
-import { NavigationBar } from '@/components/navigation-bar';
-import useBookmark from '@/hooks/use-bookmark';
-import { useFontSize } from '@/hooks/use-font-size';
-import {
-  useFontSizeKeyboardShortcut,
-  useKeyboardShortcut,
-  useScrollKeyboardShortcut,
-} from '@/hooks/use-keyboard-shortcut';
-import { FontSize } from '@/lib/fonts';
-import { stripQueryParams } from '@/lib/utils';
-import { useContext, useEffect, useRef } from 'react';
-import { PortalTargetContext } from '~/hooks/portal-target-context.tsx';
+import NavigationAndShorcutsContainer from '@/components/navigation-and-shortcuts';
+import { useEffect, useRef } from 'react';
 import { useTheme } from '~/hooks/use-theme';
 
 type AppProps = {
@@ -49,12 +38,6 @@ export default function App({
 }: AppProps) {
   const articleRef = useRef<HTMLDivElement>(null);
   const { 'data-size': size } = useTheme();
-  const portalTarget = useContext(PortalTargetContext);
-
-  useFontSizeKeyboardShortcut(portalTarget);
-  useScrollKeyboardShortcut(portalTarget);
-  const { isNavBarAutoHide, showKeyboardShortcuts } = useKeyboardShortcut();
-  const { setSize, getPreviousSize, getNextSize } = useFontSize(portalTarget);
 
   useEffect(() => {
     if (!contentNode || !articleRef.current) return;
@@ -68,8 +51,6 @@ export default function App({
     });
   }, [contentNode]);
 
-  const { bookmarked, onBookmark } = useBookmark(window.location.href);
-
   return (
     <div className='w-full min-h-screen flex items-start bg-background py-16 animate-fadein'>
       <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground' />
@@ -81,24 +62,10 @@ export default function App({
         articleRef={articleRef}
       />
 
-      <KeyboardShortcutMenu showKeyboardShortcuts={showKeyboardShortcuts} />
-
-      <NavigationBar
-        size={size}
-        isNavBarAutoHide={isNavBarAutoHide}
-        showKeyboardShortcuts={showKeyboardShortcuts}
-        onSizeIncrease={() => setSize(getNextSize(size as FontSize))}
-        onSizeDecrease={() => setSize(getPreviousSize(size as FontSize))}
-        bookmarked={bookmarked}
-        onBookmark={() => {
-          if (!articleRef.current) return;
-          onBookmark({
-            url: stripQueryParams(window.location.href),
-            title: title ?? '',
-            excerpt: excerpt ?? '',
-            content: textContent ?? '',
-          });
-        }}
+      <NavigationAndShorcutsContainer
+        title={title}
+        excerpt={excerpt}
+        textContent={textContent}
       />
     </div>
   );

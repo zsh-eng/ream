@@ -7,9 +7,8 @@ function isModifiedKey(event: KeyboardEvent) {
   return event.metaKey || event.ctrlKey || event.altKey;
 }
 
-export function useKeyboardShortcut() {
+export function useToggleNavBarAutoHide() {
   const [isNavBarAutoHide, setIsNavBarAutoHide] = useState(false);
-  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -19,8 +18,6 @@ export function useKeyboardShortcut() {
 
       if (event.key === 'h') {
         setIsNavBarAutoHide((prev) => !prev);
-      } else if (event.key === '?') {
-        setShowKeyboardShortcuts((prev) => !prev);
       }
     };
 
@@ -28,7 +25,47 @@ export function useKeyboardShortcut() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  return { isNavBarAutoHide, showKeyboardShortcuts };
+  return { isNavBarAutoHide };
+}
+
+export function useToggleKeyboardShortcutMenu() {
+  const [isKeyboardShortcutMenuVisible, setIsKeyboardShortcutMenuVisible] =
+    useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isModifiedKey(event)) {
+        return;
+      }
+      if (event.key === '?') {
+        setIsKeyboardShortcutMenuVisible((prev) => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (!isKeyboardShortcutMenuVisible) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isModifiedKey(event)) {
+        return;
+      }
+
+      if (event.key === 'Escape') {
+        setIsKeyboardShortcutMenuVisible(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isKeyboardShortcutMenuVisible]);
+
+  return { isKeyboardShortcutMenuVisible };
 }
 
 export function useFontSizeKeyboardShortcut(portalTarget: Element | null) {
