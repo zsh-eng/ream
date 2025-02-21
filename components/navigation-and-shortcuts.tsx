@@ -8,6 +8,7 @@ import {
   useToggleNavBarAutoHide,
 } from '@/hooks/use-keyboard-shortcut';
 import { FontSize } from '@/lib/fonts';
+import { useMediaQuery } from '@uidotdev/usehooks';
 import { useContext } from 'react';
 import { PortalTargetContext } from '~/hooks/portal-target-context.tsx';
 import { useTheme } from '~/hooks/use-theme';
@@ -40,6 +41,7 @@ export default function NavigationAndShorcutsContainer({
   const { setSize, getPreviousSize, getNextSize } = useFontSize(portalTarget);
   const { 'data-size': size } = useTheme();
 
+  const isSmallDevice = useMediaQuery('(max-width : 768px)');
   return (
     <>
       <KeyboardShortcutMenu
@@ -55,6 +57,7 @@ export default function NavigationAndShorcutsContainer({
         onSizeIncrease={() => setSize(getNextSize(size as FontSize))}
         onSizeDecrease={() => setSize(getPreviousSize(size as FontSize))}
         renderActionButtons={renderActionButtons}
+        isSmallDevice={isSmallDevice}
       />
     </>
   );

@@ -10,6 +10,7 @@ import { AArrowDown, AArrowUp } from 'lucide-react';
 type NavigationBarProps = {
   size: string;
   isNavBarAutoHide: boolean;
+  isSmallDevice: boolean;
   showKeyboardShortcuts: boolean;
   onSizeIncrease: () => void;
   onSizeDecrease: () => void;
@@ -24,6 +25,7 @@ export function NavigationBar({
   onSizeIncrease,
   onSizeDecrease,
   renderActionButtons,
+  isSmallDevice,
 }: NavigationBarProps) {
   return (
     <>
@@ -31,10 +33,11 @@ export function NavigationBar({
       <div className='hover-trigger fixed top-0 right-0 h-full w-20 peer' />
       <div
         className={cn(
-          'fixed top-0 right-0 md:top-0 md:right-4 flex flex-col transition-all duration-300 py-4 h-screen',
+          'fixed top-0 right-0 md:top-0 md:right-4 flex flex-col transition-all duration-300 py-4 h-screen z-30 bg-background',
           'translate-x-40 translate-y-0 peer-hover:translate-x-0 hover:translate-x-0',
           'has-data-[state=open]:translate-x-0',
-          !isNavBarAutoHide && 'translate-x-0'
+          !isSmallDevice && !isNavBarAutoHide && 'translate-x-0',
+          isSmallDevice && 'border-l border-solid border-muted'
         )}
       >
         <div className='relative'>
