@@ -64,19 +64,17 @@ export default defineBackground(() => {
   });
 
   browser.omnibox.onInputEntered.addListener((text) => {
-    if (
-      !text ||
-      'View saved articles'.toLowerCase().startsWith(text.toLowerCase())
-    ) {
-      const url = browser.runtime.getURL('/saved.html');
-      browser.tabs.create({ url });
+    const isURL = text.startsWith('http');
+    if (!isURL) {
+      const allSavedArticlesURL = browser.runtime.getURL('/saved.html');
+      browser.tabs.create({ url: allSavedArticlesURL });
       return;
     }
 
-    const encodedUrl = encodeURIComponent(text);
-    const url =
-      browser.runtime.getURL('/saved.html') + '#/article/' + encodedUrl;
-    browser.tabs.create({ url });
+    const encodedURL = encodeURIComponent(text);
+    const savedArticleURL =
+      browser.runtime.getURL('/saved.html') + '#/article/' + encodedURL;
+    browser.tabs.create({ url: savedArticleURL });
   });
 
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
