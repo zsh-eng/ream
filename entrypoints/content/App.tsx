@@ -52,21 +52,23 @@ export default function App({
   }, [contentNode]);
 
   return (
-    <div className='w-full min-h-screen flex items-start bg-background py-16 animate-fadein'>
-      <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground' />
+    <>
+      <div className='w-full min-h-screen flex items-start bg-background py-16 animate-fadein'>
+        <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground' />
 
-      <MainContent
-        title={title}
-        author={author}
-        size={size}
-        articleRef={articleRef}
-      />
+        <MainContent
+          title={title}
+          author={author}
+          size={size}
+          articleRef={articleRef}
+        />
+      </div>
 
       <NavigationAndShorcutsContainer
         title={title}
         excerpt={excerpt}
         textContent={textContent}
       />
-    </div>
+    </>
   );
 }
