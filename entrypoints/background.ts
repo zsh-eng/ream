@@ -64,14 +64,18 @@ export default defineBackground(() => {
   });
 
   browser.omnibox.onInputEntered.addListener((text) => {
-    if (!text || text === 'View saved articles') {
+    if (
+      !text ||
+      'View saved articles'.toLowerCase().startsWith(text.toLowerCase())
+    ) {
       const url = browser.runtime.getURL('/saved.html');
       browser.tabs.create({ url });
       return;
     }
 
     const encodedUrl = encodeURIComponent(text);
-    const url = browser.runtime.getURL('/saved.html') + '#/article/' + encodedUrl;
+    const url =
+      browser.runtime.getURL('/saved.html') + '#/article/' + encodedUrl;
     browser.tabs.create({ url });
   });
 
