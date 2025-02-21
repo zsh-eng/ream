@@ -93,7 +93,7 @@ export default function ArticlesPage() {
                 ref={inputRef}
                 type='text'
                 placeholder='Search...'
-                className='w-full py-2 px-3 text-lg rounded-none focus:outline-none border border-solid border-muted focus:border-muted-foreground focus:transition-colors'
+                className='w-full py-2 px-3 text-lg rounded-none focus:outline-none border border-solid border-muted-foreground/30 focus:border-muted-foreground focus:transition-colors'
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(e) => {
