@@ -127,6 +127,23 @@ export function useScrollKeyboardShortcut(portalTarget: Element | null) {
   }, [portalTarget]);
 }
 
+export function useSaveArticleKeyboardShortcut(onSave: () => void) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (isModifiedKey(event)) {
+        return;
+      }
+
+      if (event.key === 's') {
+        onSave();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onSave]);
+}
+
 export function useFocusSearchBar(
   inputRef: RefObject<HTMLInputElement | null>
 ) {

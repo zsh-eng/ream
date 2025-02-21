@@ -2,6 +2,7 @@ import { ArticleContent } from '@/components/article-content';
 import NavigationAndShorcutsContainer from '@/components/navigation-and-shortcuts';
 import { Button } from '@/components/ui/button';
 import useBookmark from '@/hooks/use-bookmark';
+import { useSaveArticleKeyboardShortcut } from '@/hooks/use-keyboard-shortcut';
 import { getCurrentPageFaviconUrl } from '@/lib/favicon';
 import { stripQueryParams } from '@/lib/utils';
 import { BookmarkIcon } from 'lucide-react';
@@ -26,6 +27,11 @@ type AppProps = {
 };
 
 const additionalShortcuts = [
+  {
+    id: 'save-article',
+    characters: ['s'],
+    description: 'Save / unsave article',
+  },
   {
     id: 'toggle-reader-mode',
     characters: ['⇧', '⌘', 'Y'],
@@ -69,6 +75,19 @@ export default function App({ article }: AppProps) {
 
   const { bookmarked, onBookmark } = useBookmark(window.location.href);
   const faviconUrl = getCurrentPageFaviconUrl();
+  const handleBookmark = () => {
+    if (!articleRef.current) return;
+
+    const html = articleRef.current.innerHTML;
+    onBookmark({
+      ...article,
+      url: stripQueryParams(window.location.href),
+      faviconUrl,
+      content: textContent,
+      html,
+    });
+  };
+  useSaveArticleKeyboardShortcut(handleBookmark);
 
   return (
     <>
@@ -87,22 +106,7 @@ export default function App({ article }: AppProps) {
       <NavigationAndShorcutsContainer
         additionalShortcuts={additionalShortcuts}
         renderActionButtons={() => (
-          <Button
-            variant='ghost'
-            size='icon'
-            onClick={() => {
-              if (!articleRef.current) return;
-
-              const html = articleRef.current.innerHTML;
-              onBookmark({
-                ...article,
-                url: stripQueryParams(window.location.href),
-                faviconUrl,
-                content: textContent,
-                html,
-              });
-            }}
-          >
+          <Button variant='ghost' size='icon' onClick={handleBookmark}>
             <BookmarkIcon
               className='size-6'
               fill={bookmarked ? 'currentColor' : 'none'}
