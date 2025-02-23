@@ -33,11 +33,11 @@ export function NavigationBar({
       <div className='hover-trigger fixed top-0 right-0 h-full w-20 peer' />
       <div
         className={cn(
-          'fixed top-0 right-0 md:top-0 md:right-4 flex flex-col transition-all duration-300 py-4 h-screen z-30 bg-background',
+          'fixed top-0 right-0 md:top-0 md:right-4 flex flex-col transition-all duration-300 py-4 h-screen z-30',
           'translate-x-40 translate-y-0 peer-hover:translate-x-0 hover:translate-x-0',
           'has-data-[state=open]:translate-x-0',
           !isSmallDevice && !isNavBarAutoHide && 'translate-x-0',
-          isSmallDevice && 'border-l border-solid border-muted'
+          isSmallDevice && 'border-l border-solid border-muted bg-background'
         )}
       >
         <div className='relative'>
