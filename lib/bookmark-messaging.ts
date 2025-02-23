@@ -78,7 +78,7 @@ export function handleBookmarkMessage(
       }),
       ReamDB.articleTexts.add({
         url: message.data.url,
-        content: message.data.textContent,
+        content: message.data.content,
       }),
       ReamDB.articleHtmls.add({
         url: message.data.url,
