@@ -1,10 +1,17 @@
-import { DEFAULT_THEME_ATTRIBUTES, THEME_ATTRIBUTES, ThemeAttribute } from '@/lib/theme';
+import {
+  DEFAULT_THEME_ATTRIBUTES,
+  THEME_ATTRIBUTES,
+  ThemeAttribute,
+} from '@/lib/theme';
 import { storage } from 'wxt/storage';
 import '~/assets/main.css';
 
 async function applyThemeAttributes(portalTarget: HTMLElement) {
   for (const attribute of THEME_ATTRIBUTES) {
-    const value = import.meta.env.VITE_REAM_ENV === 'extension' ? await storage.getItem(`local:${attribute}`) : null;
+    const value =
+      import.meta.env.VITE_REAM_ENV === 'extension'
+        ? await storage.getItem(`local:${attribute}`)
+        : localStorage.getItem(`local:${attribute}`);
     if (typeof value === 'string') {
       portalTarget.setAttribute(attribute, value);
     } else {
@@ -28,7 +35,11 @@ export async function setupThemeManagement(portalTarget: HTMLElement) {
       ) {
         const newValue = portalTarget.getAttribute(mutation.attributeName);
         if (newValue) {
-          storage.setItem(`local:${mutation.attributeName}`, newValue);
+          if (import.meta.env.VITE_REAM_ENV === 'extension') {
+            storage.setItem(`local:${mutation.attributeName}`, newValue);
+          } else {
+            localStorage.setItem(`local:${mutation.attributeName}`, newValue);
+          }
         }
       }
     }
