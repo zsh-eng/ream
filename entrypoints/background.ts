@@ -14,7 +14,7 @@ async function handleCommand(tab: chrome.tabs.Tab) {
     });
   }
 
-  const nextState = prevState === 'ON' ? 'OFF' : 'ON';
+  const nextState = prevState === 'ON' ? '' : 'ON';
   await browser.action.setBadgeText({
     tabId: tab.id,
     text: nextState,
