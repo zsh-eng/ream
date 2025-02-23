@@ -2,9 +2,13 @@
 
 Ream is a simple, clean, open-source reader mode extension for Chrome and Firefox.
 
-[Firefox Link](https://addons.mozilla.org/en-US/firefox/addon/ream)
+## Get Ream
 
-Chrome version is still in review!
+[![Get Ream for Firefox](./docs/firefox-get-addon.png)](https://addons.mozilla.org/en-US/firefox/addon/ream)
+
+[![Get Ream for Chrome](./docs/chrome-get-addon.png)](https://chromewebstore.google.com/detail/ream/ghflcpbbkigpaagelodcpbdjjomikdoe)
+
+To play around with Ream's theming, you can head to the [website](https://ream.zsheng.app).
 
 ## Screenshots
 
