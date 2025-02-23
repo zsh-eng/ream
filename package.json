@@ -15,7 +15,7 @@
     "postinstall": "wxt prepare",
     "generate-assets": "pwa-assets-generator",
     "web:dev": "vite",
-    "web:build": "tsc -b && vite build",
+    "web:build": "tsc -p tsconfig.website.json && vite build --config vite.config.ts",
     "lint": "eslint ."
   },
   "dependencies": {
