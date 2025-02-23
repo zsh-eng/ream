@@ -22,7 +22,6 @@
     "@mozilla/readability": "^0.5.0",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-slot": "^1.1.2",
-    "@tailwindcss/vite": "^4.0.6",
     "@types/turndown": "^5.0.5",
     "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.1",
@@ -44,17 +43,20 @@
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/vite": "^4.0.6",
     "@types/chrome": "^0.0.280",
     "@types/node": "^22.13.4",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "@vite-pwa/assets-generator": "^0.2.6",
+    "@vitejs/plugin-react-swc": "^3.8.0",
     "@wxt-dev/module-react": "^1.1.2",
     "eslint": "^9.20.1",
     "eslint-plugin-react": "^7.37.4",
     "globals": "^16.0.0",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.24.1",
+    "vite": "^6.1.1",
     "wxt": "^0.19.13"
   }
 }
