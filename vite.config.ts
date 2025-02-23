@@ -5,7 +5,6 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig({
-  // @ts-ignore
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -13,4 +12,5 @@ export default defineConfig({
       '@': path.resolve(__dirname, '.'),
     },
   },
+  envDir: path.resolve(__dirname, './website'),
 });
