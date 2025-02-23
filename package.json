@@ -16,6 +16,8 @@
     "generate-assets": "pwa-assets-generator",
     "web:dev": "vite",
     "web:build": "tsc -p tsconfig.website.json && vite build --config vite.config.ts",
+    "web:preview": "pnpm run web:build && wrangler pages dev ./dist",
+    "web:deploy": "pnpm run web:build && wrangler pages deploy ./dist --project-name ream-website",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -57,6 +59,7 @@
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.1.1",
+    "wrangler": "^3.109.2",
     "wxt": "^0.19.13"
   }
 }
