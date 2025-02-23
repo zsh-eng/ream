@@ -63,10 +63,14 @@ export default defineBackground(() => {
     );
   });
 
-  browser.omnibox.onInputEntered.addListener((text) => {
+  browser.omnibox.onInputEntered.addListener((text, disposition) => {
     const isURL = text.startsWith('http');
     if (!isURL) {
       const allSavedArticlesURL = browser.runtime.getURL('/saved.html');
+      if (disposition === 'currentTab') {
+        browser.tabs.update({ url: allSavedArticlesURL });
+        return;
+      }
       browser.tabs.create({ url: allSavedArticlesURL });
       return;
     }
@@ -74,6 +78,11 @@ export default defineBackground(() => {
     const encodedURL = encodeURIComponent(text);
     const savedArticleURL =
       browser.runtime.getURL('/saved.html') + '#/article/' + encodedURL;
+
+    if (disposition === 'currentTab') {
+      browser.tabs.update({ url: savedArticleURL });
+      return;
+    }
     browser.tabs.create({ url: savedArticleURL });
   });
 
