@@ -45,7 +45,7 @@ export default function SavedArticlePage({ url }: { url: string }) {
 
   return (
     <>
-      <div className='w-full min-h-screen flex items-start py-16 animate-fadein'>
+      <div className='w-full min-h-screen flex items-start py-4 md:py-16 animate-fadein'>
         <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground' />
 
         <ArticleContent

@@ -55,7 +55,7 @@ export default function ArticlesPage() {
 
   return (
     <>
-      <div className='w-full min-h-screen flex items-start  py-16 animate-fadein px-4'>
+      <div className='w-full min-h-screen flex items-start py-4 md:py-16 animate-fadein px-4'>
         <div className='w-0 lg:w-32 xl:w-48 h-full border-r-2 border-muted-foreground' />
         <div className='flex flex-col gap-0 max-w-2xl'>
           <div
