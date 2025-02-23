@@ -49,6 +49,7 @@ I spent a few days learning about creating browser extensions and built my own r
 - [DexieJS](https://dexie.org/): Wrapper for accessing IndexedDB.
 - [MiniSearch](https://github.com/lucaong/minisearch): Full text search of saved articles.
 - [wouter](https://github.com/molefrog/wouter): Hash-based routing.
+- [Modern font stack](https://modernfontstacks.com/#font-stacks): Beautiful system fonts.
 
 ## License
 
