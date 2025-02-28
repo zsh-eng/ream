@@ -1,7 +1,8 @@
 import { handleBookmarkMessage } from '@/lib/bookmark-messaging';
 import { getArticles } from '@/lib/memory';
+import '~/assets/main.css';
 
-async function handleCommand(tab: chrome.tabs.Tab) {
+async function handleToggleReamCommand(tab: chrome.tabs.Tab) {
   if (!tab.id) {
     return true;
   }
@@ -20,7 +21,7 @@ async function handleCommand(tab: chrome.tabs.Tab) {
       if (!isScriptExecuted) {
         await browser.scripting.executeScript({
           target: { tabId: tab.id },
-          files: ['content-scripts/content.js'],
+          files: ['content-scripts/main.js'],
         });
       }
     }
@@ -49,14 +50,35 @@ async function handleCommand(tab: chrome.tabs.Tab) {
   return true;
 }
 
+async function handleToggleSidepanelCommand(tab: chrome.tabs.Tab) {
+  if (!tab.id) {
+    return true;
+  }
+
+  await browser.tabs.sendMessage(tab.id!, { action: 'toggle-sidepanel' });
+  return true;
+}
+
+async function handleToggleSaveCommand(tab: chrome.tabs.Tab) {
+  if (!tab.id) {
+    return true;
+  }
+}
+
 export default defineBackground(() => {
-  browser.action.onClicked.addListener(handleCommand);
+  browser.action.onClicked.addListener(handleToggleReamCommand);
   browser.commands.onCommand.addListener(async (command, tab) => {
     if (command === '_execute_action') {
-      return handleCommand(tab);
+      return handleToggleReamCommand(tab);
     }
     if (command === 'toggle-ream') {
-      return handleCommand(tab);
+      return handleToggleReamCommand(tab);
+    }
+    if (command === 'toggle-sidepanel') {
+      return handleToggleSidepanelCommand(tab);
+    }
+    if (command === 'toggle-save') {
+      return handleToggleSaveCommand(tab);
     }
     return true;
   });

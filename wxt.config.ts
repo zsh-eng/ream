@@ -39,6 +39,20 @@ export default defineConfig({
           mac: 'Command+Shift+Y',
         },
       },
+      'toggle-save': {
+        description: 'Toggle save article',
+        suggested_key: {
+          default: 'Ctrl+Shift+S',
+          mac: 'Command+Shift+S',
+        },
+      },
+      'toggle-sidepanel': {
+        description: 'Toggle side panel',
+        suggested_key: {
+          default: 'Ctrl+Shift+P',
+          mac: 'Command+Shift+P',
+        },
+      },
     },
   }),
   vite: () => ({
