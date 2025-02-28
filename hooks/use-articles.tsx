@@ -1,8 +1,51 @@
+import {
+  GetArticlesMessage,
+  GetArticlesResponse,
+} from '@/lib/article-messaging';
 import { Article, ReamDB } from '@/lib/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import MiniSearch from 'minisearch';
 import { useMemo } from 'react';
 import '~/assets/main.css';
+
+
+/**
+ * useArticles hook, but communicates with the background script to fetch the data.
+ */
+export function useArticlesMessaging({
+  isOpen,
+}: {
+  isOpen: boolean;
+}) {
+  const [articles, setArticles] = useState<Article[]>([]);
+
+  useEffect(() => {
+    const message: GetArticlesMessage = { type: 'GET_ARTICLES' };
+    browser.runtime.sendMessage(message, (response: GetArticlesResponse) => {
+      if (response.type === 'GET_ARTICLES_RESPONSE') {
+        setArticles(response.articles);
+      }
+    });
+  }, []);
+
+  // Subscribe to changes in the articles from the background script
+  useEffect(() => {
+    const listener = (message: {
+      type: 'ARTICLES_UPDATED';
+      articles: Article[];
+    }) => {
+      if (message.type === 'ARTICLES_UPDATED') {
+        setArticles(message.articles);
+      }
+    };
+    browser.runtime.onMessage.addListener(listener);
+    return () => {
+      browser.runtime.onMessage.removeListener(listener);
+    };
+  }, [isOpen]); // rerun whenever the side panel is closed
+
+  return { articles };
+}
 
 export function useArticles() {
   const articles = useLiveQuery(async () => {
@@ -25,7 +68,10 @@ export function useSortedArticles(
   }, [articles, sortDirection]);
 }
 
-export type PartialArticle = Pick<Article, 'title' | 'url' | 'siteName' | 'excerpt'>;
+export type PartialArticle = Pick<
+  Article,
+  'title' | 'url' | 'siteName' | 'excerpt'
+>;
 
 export function useSearchedArticles(
   articles: Article[] | undefined,

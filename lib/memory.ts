@@ -4,6 +4,7 @@ import { Article, ReamDB } from '@/lib/db';
 let articles: Article[] = [];
 
 let isLoading = false;
+const subscribers: Set<(articles: Article[]) => void> = new Set();
 
 async function loadArticles() {
   if (isLoading) {
@@ -22,6 +23,7 @@ loadArticles();
 
 ReamDB.articles.hook('creating', (_, article) => {
   articles.push(article);
+  notifySubscribers();
 });
 
 ReamDB.articles.hook('updating', (modifiedArticle, url) => {
@@ -32,6 +34,7 @@ ReamDB.articles.hook('updating', (modifiedArticle, url) => {
       ...modifiedArticle,
     };
   }
+  notifySubscribers();
 });
 
 ReamDB.articles.hook('deleting', (url) => {
@@ -39,7 +42,26 @@ ReamDB.articles.hook('deleting', (url) => {
   if (index !== -1) {
     articles.splice(index, 1);
   }
+
+  notifySubscribers();
 });
+
+function notifySubscribers() {
+  // To avoid mutating the set while iterating over it
+  const subscribersArray = Array.from(subscribers);
+  subscribersArray.forEach((subscriber) => {
+    subscriber(articles);
+  });
+}
+
+export function subscribeToArticles(subscriber: (articles: Article[]) => void) {
+  console.log('subscribing', subscriber);
+  subscribers.add(subscriber);
+  return () => {
+    console.log('unsubscribing', subscriber);
+    subscribers.delete(subscriber);
+  };
+}
 
 export function getArticles() {
   return articles;

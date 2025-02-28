@@ -1,5 +1,7 @@
+import { handleGetArticlesMessage } from '@/lib/article-messaging';
 import { handleBookmarkMessage } from '@/lib/bookmark-messaging';
 import { getArticles } from '@/lib/memory';
+import { handleNavigateSavedArticleMessage } from '@/lib/navigation-messaging';
 import '~/assets/main.css';
 
 async function handleToggleReamCommand(tab: chrome.tabs.Tab) {
@@ -124,7 +126,13 @@ export default defineBackground(() => {
   });
 
   browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-    handleBookmarkMessage(message, sendResponse);
+    if (message.type === 'GET_ARTICLES') {
+      handleGetArticlesMessage(message, sendResponse);
+    } else if (message.type === 'NAVIGATE_SAVED_ARTICLE') {
+      handleNavigateSavedArticleMessage(message, sendResponse);
+    } else {
+      handleBookmarkMessage(message, sendResponse);
+    }
     // keep the message port open as we're doing this async
     return true;
   });

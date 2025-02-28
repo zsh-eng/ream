@@ -10,6 +10,7 @@ type SavedArticlesHeaderProps = {
   setSearch: (search: string) => void;
   dateSort: 'asc' | 'desc';
   setDateSort: (dateSort: 'asc' | 'desc') => void;
+  isSidePanel?: boolean;
 };
 
 export function SavedArticlesHeader({
@@ -17,6 +18,7 @@ export function SavedArticlesHeader({
   setSearch,
   dateSort,
   setDateSort,
+  isSidePanel = false,
 }: SavedArticlesHeaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   useFocusSearchBar(inputRef);
@@ -24,14 +26,17 @@ export function SavedArticlesHeader({
   return (
     <div
       className={cn(
-        'flex flex-col gap-0 sticky top-0 bg-background z-20 pt-6 pb-2',
+        'flex flex-col gap-0 sticky top-0 z-20 pt-6 pb-2',
         // Ensure that the stick covers the scaled up version of the article card
-        'before:absolute before:content-[""] before:bg-background before:h-full before:w-[200px] before:right-full before:top-0 after:absolute after:content-[""] after:bg-background after:h-full after:w-[200px] after:left-full after:top-0',
-        'w-[var(--container-2xl)]'
+        !isSidePanel &&
+          'bg-background before:absolute before:content-[""] before:bg-background before:h-full before:w-[200px] before:right-full before:top-0 after:absolute after:content-[""] after:bg-background after:h-full after:w-[200px] after:left-full after:top-0',
+        isSidePanel ? 'w-full' : 'w-[var(--container-2xl)]'
       )}
     >
-      <div className='flex items-center gap-2'>
-        <h1 className='text-4xl font-bold'>Saved Articles</h1>
+      <div className='flex items-center gap-2 h-10'>
+        <h1 className={cn('text-4xl font-bold', isSidePanel && 'text-2xl')}>
+          Saved Articles
+        </h1>
         <div className='flex-1'></div>
 
         {!search && (

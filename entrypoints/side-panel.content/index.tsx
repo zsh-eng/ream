@@ -1,3 +1,4 @@
+import { setupThemeManagement } from '@/lib/shell';
 import ReactDOM from 'react-dom/client';
 import '~/assets/main.css';
 import SidePanelApp from './side-panel-app';
@@ -12,16 +13,22 @@ export default defineContentScript({
       anchor: 'body',
       onMount(container) {
         container.style.position = 'relative';
-        container.style.zIndex = '100';
+        container.style.zIndex = '100000';
         const app = document.createElement('div');
         const root = ReactDOM.createRoot(app);
+
+        const observer = setupThemeManagement(container);
         root.render(<SidePanelApp />);
 
         container.append(app);
-        return { root };
+        return { root, observer };
       },
-      onRemove(elements) {
+      onRemove: async (elements) => {
         elements?.root.unmount();
+        const observer = await elements?.observer;
+        if (observer) {
+          observer.disconnect();
+        }
       },
     });
 
