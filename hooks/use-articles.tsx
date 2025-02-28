@@ -1,9 +1,8 @@
-import { Article } from '@/lib/db';
+import { Article, ReamDB } from '@/lib/db';
 import { useLiveQuery } from 'dexie-react-hooks';
 import MiniSearch from 'minisearch';
 import { useMemo } from 'react';
 import '~/assets/main.css';
-import { ReamDB } from '@/lib/db';
 
 export function useArticles() {
   const articles = useLiveQuery(async () => {
@@ -26,6 +25,8 @@ export function useSortedArticles(
   }, [articles, sortDirection]);
 }
 
+export type PartialArticle = Pick<Article, 'title' | 'url' | 'siteName' | 'excerpt'>;
+
 export function useSearchedArticles(
   articles: Article[] | undefined,
   searchQuery: string
@@ -33,10 +34,11 @@ export function useSearchedArticles(
   return useMemo(() => {
     if (!searchQuery || !articles?.length) return [];
 
-    const miniSearch = new MiniSearch({
+    const miniSearch = new MiniSearch<Article>({
       fields: ['title', 'url', 'siteName', 'excerpt'],
       storeFields: ['title', 'url', 'siteName', 'excerpt'],
     });
+
     miniSearch.addAll(
       articles.map((article) => ({
         ...article,
@@ -44,6 +46,9 @@ export function useSearchedArticles(
       }))
     );
 
-    return miniSearch.search(searchQuery, { prefix: true });
+    const results = miniSearch.search(searchQuery, {
+      prefix: true,
+    }) as unknown as PartialArticle[];
+    return results;
   }, [articles, searchQuery]);
 }
