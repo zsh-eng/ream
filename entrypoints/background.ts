@@ -68,7 +68,10 @@ async function handleToggleSaveCommand(tab: chrome.tabs.Tab) {
 }
 
 export default defineBackground(() => {
+  // CLICK ACTION LISTENER
   browser.action.onClicked.addListener(handleToggleReamCommand);
+
+  // COMMAND LISTENER
   browser.commands.onCommand.addListener(async (command, tab) => {
     if (command === '_execute_action') {
       return handleToggleReamCommand(tab);
@@ -85,10 +88,10 @@ export default defineBackground(() => {
     return true;
   });
 
+  // OMNIBOX LISTENERS
   browser.omnibox.setDefaultSuggestion({
     description: 'View saved articles',
   });
-
   browser.omnibox.onInputChanged.addListener((text, suggest) => {
     const articles = getArticles().filter((article) =>
       article.title.toLowerCase().includes(text.toLowerCase())
@@ -101,7 +104,6 @@ export default defineBackground(() => {
       }))
     );
   });
-
   browser.omnibox.onInputEntered.addListener((text, disposition) => {
     const isURL = text.startsWith('http');
     if (!isURL) {
@@ -125,6 +127,7 @@ export default defineBackground(() => {
     browser.tabs.create({ url: savedArticleURL });
   });
 
+  // MESSAGE LISTENERS
   browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     if (message.type === 'GET_ARTICLES') {
       handleGetArticlesMessage(message, sendResponse);
