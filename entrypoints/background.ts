@@ -43,6 +43,9 @@ export default defineBackground(() => {
     if (command === '_execute_action') {
       return handleCommand(tab);
     }
+    if (command === 'toggle-ream') {
+      return handleCommand(tab);
+    }
     return true;
   });
 

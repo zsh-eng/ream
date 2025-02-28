@@ -10,7 +10,7 @@ export default defineConfig({
     permissions: ['activeTab', 'storage', 'scripting'],
     action: {}, // to allow us to trigger on click
     omnibox: {
-      keyword: 'ream'
+      keyword: 'ream',
     },
     web_accessible_resources: [
       {
@@ -31,7 +31,9 @@ export default defineConfig({
           }
         : undefined,
     commands: {
-      _execute_action: {
+      _execute_action: {},
+      'toggle-ream': {
+        description: 'Toggle Ream',
         suggested_key: {
           default: 'Ctrl+Shift+Y',
           mac: 'Command+Shift+Y',
