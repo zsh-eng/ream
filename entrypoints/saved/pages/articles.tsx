@@ -1,13 +1,16 @@
 import NavigationAndShorcutsContainer from '@/components/navigation-and-shortcuts';
 import { Button } from '@/components/ui/button';
+import {
+  useArticles,
+  useSearchedArticles,
+  useSortedArticles,
+} from '@/hooks/use-articles';
 import { useFocusSearchBar } from '@/hooks/use-keyboard-shortcut';
-import { ReamDB } from '@/lib/db';
 import { cn } from '@/lib/utils';
-import { useLiveQuery } from 'dexie-react-hooks';
 import { CalendarArrowDown, CalendarArrowUp, LinkIcon, X } from 'lucide-react';
-import MiniSearch from 'minisearch';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'wouter';
+import '~/assets/main.css';
 
 const additionalShortcuts = [
   {
@@ -18,36 +21,13 @@ const additionalShortcuts = [
 ];
 
 export default function ArticlesPage() {
-  const articles = useLiveQuery(async () => {
-    return ReamDB.articles.toArray();
-  });
+  const articles = useArticles();
 
   const [dateSort, setDateSort] = useState<'asc' | 'desc'>('desc');
   const [search, setSearch] = useState('');
 
-  const sortedArticles = useMemo(() => {
-    return articles?.sort((a, b) => {
-      return dateSort === 'asc'
-        ? a.createdAt - b.createdAt
-        : b.createdAt - a.createdAt;
-    });
-  }, [articles, dateSort]);
-
-  const miniSearch = new MiniSearch({
-    fields: ['title', 'url', 'siteName', 'excerpt'],
-    storeFields: ['title', 'url', 'siteName', 'excerpt'],
-  });
-
-  miniSearch.addAll(
-    articles?.map((article) => ({
-      ...article,
-      id: article.url,
-    })) ?? []
-  );
-  const searchResults = useMemo(
-    () => miniSearch.search(search, { prefix: true }),
-    [miniSearch, search]
-  );
+  const sortedArticles = useSortedArticles(articles, dateSort);
+  const searchResults = useSearchedArticles(articles, search);
 
   const articlesToDisplay = search ? searchResults : sortedArticles;
   const inputRef = useRef<HTMLInputElement>(null);
