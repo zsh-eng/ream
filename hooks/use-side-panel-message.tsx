@@ -1,9 +1,9 @@
+import { toast } from '@/components/ui/toaster';
 import {
   parseArticle,
   readabilityContentToArticleToAdd,
 } from '@/lib/parse-article';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 export function useToggleSidePanelMessage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,11 +27,7 @@ export function useToggleSidePanelMessage() {
 export function useToggleSaveArticleMessage() {
   const { toggle } = useBookmarkToggle({
     onComplete: (isBookmarked) => {
-      if (isBookmarked) {
-        toast.success('Article saved');
-      } else {
-        toast.error('Article removed');
-      }
+      toast(isBookmarked);
     },
   });
 
@@ -45,7 +41,6 @@ export function useToggleSaveArticleMessage() {
         }
 
         const articleToAdd = readabilityContentToArticleToAdd(article);
-        console.log('articleToAdd', articleToAdd);
         toggle(articleToAdd);
       }
     };

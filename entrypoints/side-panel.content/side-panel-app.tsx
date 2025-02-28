@@ -1,5 +1,6 @@
 import { SavedArticlesHeader } from '@/components/saved-articles/header';
 import { SavedArticlesList } from '@/components/saved-articles/list';
+import { Toaster } from '@/components/ui/toaster';
 import { useSearchedArticles, useSortedArticles } from '@/hooks/use-articles';
 import { useToggleSidePanelMessage } from '@/hooks/use-side-panel-message';
 import { cn } from '@/lib/utils';
@@ -45,6 +46,7 @@ export default function SidePanelApp() {
           />
         </div>
       </div>
+      <Toaster />
     </>
   );
 }
