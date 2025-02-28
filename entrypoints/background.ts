@@ -7,11 +7,23 @@ async function handleCommand(tab: chrome.tabs.Tab) {
   }
 
   const prevState = await browser.action.getBadgeText({ tabId: tab.id });
+
+  let isScriptExecuted = false;
   if (!prevState) {
-    await browser.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ['content-scripts/content.js'],
-    });
+    try {
+      isScriptExecuted = await browser.tabs.sendMessage(tab.id!, {
+        action: 'content-script-loaded',
+      });
+    } catch {
+      console.log('Script not executed, executing it now');
+    } finally {
+      if (!isScriptExecuted) {
+        await browser.scripting.executeScript({
+          target: { tabId: tab.id },
+          files: ['content-scripts/content.js'],
+        });
+      }
+    }
   }
 
   const nextState = prevState === 'ON' ? '' : 'ON';

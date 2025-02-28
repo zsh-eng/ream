@@ -95,13 +95,15 @@ export default defineContentScript({
     browser.runtime.onMessage.addListener((message) => {
       if (message.action === 'unmount') {
         ui?.remove();
-        return true;
+        return;
       } else if (message.action === 'mount') {
         createReaderUI(ctx).then((newUi) => {
           ui = newUi;
           ui?.mount();
         });
-        return true;
+        return;
+      } else if (message.action === 'content-script-loaded') {
+        return Promise.resolve(true);
       }
     });
   },
