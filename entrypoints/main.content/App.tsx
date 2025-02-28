@@ -1,26 +1,14 @@
 import { ArticleContent } from '@/components/article-content';
 import NavigationAndShorcutsContainer from '@/components/navigation-and-shortcuts';
 import { Button } from '@/components/ui/button';
-import useBookmark from '@/hooks/use-bookmark';
+import { useBookmark } from '@/hooks/use-bookmark';
 import { useSaveArticleKeyboardShortcut } from '@/hooks/use-keyboard-shortcut';
 import { getCurrentPageFaviconUrl } from '@/lib/favicon';
+import { ReadabilityContent } from '@/lib/parse-article';
 import { stripQueryParams } from '@/lib/utils';
 import { BookmarkIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTheme } from '~/hooks/use-theme';
-
-type ReadabilityContent = {
-  title: string;
-  length: number;
-  excerpt: string;
-  byline: string;
-  dir: string;
-  siteName: string;
-  lang: string;
-  publishedTime: string;
-  content: Node;
-  textContent: string;
-};
 
 type AppProps = {
   article: ReadabilityContent;

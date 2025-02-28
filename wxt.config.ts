@@ -35,15 +35,15 @@ export default defineConfig({
       'toggle-ream': {
         description: 'Toggle Ream',
         suggested_key: {
-          default: 'Ctrl+Shift+Y',
-          mac: 'Command+Shift+Y',
+          default: 'Ctrl+Shift+O',
+          mac: 'Command+Shift+O',
         },
       },
       'toggle-save': {
         description: 'Toggle save article',
         suggested_key: {
-          default: 'Ctrl+Shift+S',
-          mac: 'Command+Shift+S',
+          default: 'Ctrl+Shift+U',
+          mac: 'Command+Shift+U',
         },
       },
       'toggle-sidepanel': {

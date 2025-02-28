@@ -26,23 +26,7 @@ export function useArticlesMessaging({
         setArticles(response.articles);
       }
     });
-  }, []);
-
-  // Subscribe to changes in the articles from the background script
-  useEffect(() => {
-    const listener = (message: {
-      type: 'ARTICLES_UPDATED';
-      articles: Article[];
-    }) => {
-      if (message.type === 'ARTICLES_UPDATED') {
-        setArticles(message.articles);
-      }
-    };
-    browser.runtime.onMessage.addListener(listener);
-    return () => {
-      browser.runtime.onMessage.removeListener(listener);
-    };
-  }, [isOpen]); // rerun whenever the side panel is closed
+  }, [isOpen]);
 
   return { articles };
 }

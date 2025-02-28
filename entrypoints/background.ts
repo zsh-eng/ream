@@ -65,6 +65,9 @@ async function handleToggleSaveCommand(tab: chrome.tabs.Tab) {
   if (!tab.id) {
     return true;
   }
+
+  await browser.tabs.sendMessage(tab.id!, { action: 'toggle-save-article' });
+  return true;
 }
 
 export default defineBackground(() => {
@@ -73,6 +76,7 @@ export default defineBackground(() => {
 
   // COMMAND LISTENER
   browser.commands.onCommand.addListener(async (command, tab) => {
+    console.log('received command', command);
     if (command === '_execute_action') {
       return handleToggleReamCommand(tab);
     }
@@ -129,6 +133,7 @@ export default defineBackground(() => {
 
   // MESSAGE LISTENERS
   browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+    console.log('received message', message.type);
     if (message.type === 'GET_ARTICLES') {
       handleGetArticlesMessage(message, sendResponse);
     } else if (message.type === 'NAVIGATE_SAVED_ARTICLE') {

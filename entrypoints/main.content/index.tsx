@@ -1,10 +1,10 @@
+import App from '@/entrypoints/main.content/App';
 import { DropdownProvider } from '@/hooks/active-dropdown-context';
+import { parseArticle } from '@/lib/parse-article';
 import { setupThemeManagement } from '@/lib/shell';
-import { Readability } from '@mozilla/readability';
 import ReactDOM from 'react-dom/client';
 import { ContentScriptContext } from 'wxt/client';
 import '~/assets/main.css';
-import App from '@/entrypoints/main.content/App';
 import { PortalTargetContext } from '~/hooks/portal-target-context.tsx';
 
 async function createReaderUI(ctx: ContentScriptContext) {
@@ -75,13 +75,6 @@ function restoreOriginalStylesheets(stylesheets: HTMLStyleElement[]) {
   stylesheets.forEach((style) => {
     document.head.appendChild(style);
   });
-}
-
-function parseArticle() {
-  const documentClone = document.cloneNode(true) as Document;
-  return new Readability(documentClone, {
-    serializer: (el) => el,
-  }).parse();
 }
 
 export default defineContentScript({

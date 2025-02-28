@@ -1,12 +1,14 @@
 import {
-    AddBookmarkMessage,
-    CheckBookmarkMessage,
-    DeleteBookmarkMessage,
+  AddBookmarkMessage,
+  CheckBookmarkMessage,
+  DeleteBookmarkMessage,
+  ToggleBookmarkMessage,
+  ToggleBookmarkResponse,
 } from '@/lib/bookmark-messaging';
 import { ArticleToAdd } from '@/lib/db';
 import { useCallback, useEffect, useState } from 'react';
 
-const useBookmark = (url: string) => {
+export const useBookmark = (url: string) => {
   const [bookmarked, setBookmarked] = useState(false);
 
   useEffect(() => {
@@ -45,4 +47,23 @@ const useBookmark = (url: string) => {
   return { bookmarked, onBookmark };
 };
 
-export default useBookmark;
+export const useBookmarkToggle = ({
+  onComplete,
+}: {
+  onComplete: (isBookmarked: boolean) => void;
+}) => {
+  const toggle = useCallback(
+    (data: ArticleToAdd) => {
+      const toggleMessage: ToggleBookmarkMessage = {
+        type: 'TOGGLE_BOOKMARK',
+        data,
+      };
+      browser.runtime.sendMessage(toggleMessage, (response) => {
+        onComplete((response as ToggleBookmarkResponse).bookmarked);
+      });
+    },
+    [onComplete]
+  );
+
+  return { toggle };
+};

@@ -21,10 +21,21 @@ export type DeleteBookmarkMessage = {
   url: string;
 };
 
+/**
+ * Toggle bookmark helps us avoid having to communicate back and forth between
+ * the side panel content script and the background script, since we don't need
+ * to render the bookmarked page in the side panel.
+ */
+export type ToggleBookmarkMessage = {
+  type: 'TOGGLE_BOOKMARK';
+  data: ArticleToAdd;
+};
+
 export type BookmarkMessage =
   | CheckBookmarkMessage
   | AddBookmarkMessage
-  | DeleteBookmarkMessage;
+  | DeleteBookmarkMessage
+  | ToggleBookmarkMessage;
 
 type AddBookmarkResponse = {
   type: 'ADD_BOOKMARK_RESPONSE';
@@ -41,10 +52,51 @@ type CheckBookmarkResponse = {
   bookmarked: boolean;
 };
 
+export type ToggleBookmarkResponse = {
+  type: 'TOGGLE_BOOKMARK_RESPONSE';
+  bookmarked: boolean;
+};
+
 export type BookmarkResponse =
   | AddBookmarkResponse
   | DeleteBookmarkResponse
-  | CheckBookmarkResponse;
+  | CheckBookmarkResponse
+  | ToggleBookmarkResponse;
+
+async function addArticle(data: ArticleToAdd) {
+  return Promise.all([
+    ReamDB.articles.add({
+      url: data.url,
+      createdAt: Date.now(),
+
+      faviconUrl: data.faviconUrl,
+      title: data.title,
+      length: data.length,
+      excerpt: data.excerpt,
+      byline: data.byline,
+      dir: data.dir,
+      siteName: data.siteName,
+      lang: data.lang,
+      publishedTime: data.publishedTime,
+    }),
+    ReamDB.articleTexts.add({
+      url: data.url,
+      content: data.content,
+    }),
+    ReamDB.articleHtmls.add({
+      url: data.url,
+      html: data.html,
+    }),
+  ]);
+}
+
+async function deleteArticle(url: string) {
+  return Promise.all([
+    ReamDB.articles.delete(url),
+    ReamDB.articleTexts.delete(url),
+    ReamDB.articleHtmls.delete(url),
+  ]);
+}
 
 export function handleBookmarkMessage(
   message: BookmarkMessage,
@@ -60,31 +112,24 @@ export function handleBookmarkMessage(
     return true;
   }
 
-  if (message.type === 'ADD_BOOKMARK') {
-    Promise.all([
-      ReamDB.articles.add({
-        url: message.data.url,
-        createdAt: Date.now(),
+  if (message.type === 'TOGGLE_BOOKMARK') {
+    ReamDB.articles.get(message.data.url).then((article) => {
+      const promise = article
+        ? deleteArticle(message.data.url)
+        : addArticle(message.data);
+      promise.then(() =>
+        sendResponse({
+          type: 'TOGGLE_BOOKMARK_RESPONSE',
+          bookmarked: !article,
+        })
+      );
+    });
 
-        faviconUrl: message.data.faviconUrl,
-        title: message.data.title,
-        length: message.data.length,
-        excerpt: message.data.excerpt,
-        byline: message.data.byline,
-        dir: message.data.dir,
-        siteName: message.data.siteName,
-        lang: message.data.lang,
-        publishedTime: message.data.publishedTime,
-      }),
-      ReamDB.articleTexts.add({
-        url: message.data.url,
-        content: message.data.content,
-      }),
-      ReamDB.articleHtmls.add({
-        url: message.data.url,
-        html: message.data.html,
-      }),
-    ]).then(() =>
+    return true;
+  }
+
+  if (message.type === 'ADD_BOOKMARK') {
+    addArticle(message.data).then(() =>
       sendResponse({
         type: 'ADD_BOOKMARK_RESPONSE',
         success: true,
@@ -94,11 +139,7 @@ export function handleBookmarkMessage(
   }
 
   if (message.type === 'DELETE_BOOKMARK') {
-    Promise.all([
-      ReamDB.articles.delete(message.url!),
-      ReamDB.articleTexts.delete(message.url!),
-      ReamDB.articleHtmls.delete(message.url!),
-    ]).then(() =>
+    deleteArticle(message.url!).then(() =>
       sendResponse({
         type: 'DELETE_BOOKMARK_RESPONSE',
         success: true,

@@ -1,7 +1,7 @@
 import { SavedArticlesHeader } from '@/components/saved-articles/header';
 import { SavedArticlesList } from '@/components/saved-articles/list';
 import { useSearchedArticles, useSortedArticles } from '@/hooks/use-articles';
-import { useSidePanelMessage } from '@/hooks/use-side-panel-message';
+import { useToggleSidePanelMessage } from '@/hooks/use-side-panel-message';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import '~/assets/main.css';
@@ -10,7 +10,8 @@ import '~/assets/main.css';
 // Many websites like to set the root font size to be a percentage, which messes with
 // the default tailwind sizing.
 export default function SidePanelApp() {
-  const { isOpen } = useSidePanelMessage();
+  useToggleSaveArticleMessage();
+  const { isOpen } = useToggleSidePanelMessage();
   const { articles } = useArticlesMessaging({ isOpen });
 
   const [dateSort, setDateSort] = useState<'asc' | 'desc'>('desc');
