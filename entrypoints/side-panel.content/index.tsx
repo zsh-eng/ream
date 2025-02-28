@@ -4,7 +4,8 @@ import '~/assets/main.css';
 import SidePanelApp from './side-panel-app';
 
 export default defineContentScript({
-  matches: ['<all_urls>'],
+  registration: 'runtime',
+  matches: [],
   cssInjectionMode: 'ui',
   async main(ctx) {
     const ui = await createShadowRootUi(ctx, {
@@ -41,7 +42,14 @@ export default defineContentScript({
       },
     });
 
-    console.log('executing main');
     ui.mount();
+
+    // Unlike the main content script, we can keep the side panel open
+    // because we aren't hiding the main document.
+    browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+      if (message.action === 'side-panel-content-script-loaded') {
+        sendResponse(true);
+      }
+    });
   },
 });

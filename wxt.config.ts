@@ -21,6 +21,14 @@ export default defineConfig({
         resources: ['content-scripts/main.css'],
         matches: ['<all_urls>'],
       },
+      {
+        resources: ['content-scripts/side-panel.css'],
+        matches: ['<all_urls>'],
+      },
+      {
+        resources: ['content-scripts/side-panel.js'],
+        matches: ['<all_urls>'],
+      },
     ],
     browser_specific_settings:
       browser === 'firefox'

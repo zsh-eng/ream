@@ -52,11 +52,32 @@ async function handleToggleReamCommand(tab: chrome.tabs.Tab) {
   return true;
 }
 
+async function executeSidePanelScriptIfNotExecuted(tabId: number) {
+  let isScriptExecuted = false;
+  try {
+    isScriptExecuted = await browser.tabs.sendMessage(tabId, {
+      action: 'side-panel-content-script-loaded',
+    });
+    console.log('message reply is', isScriptExecuted);
+  } catch {
+    console.log('Side panel content script not executed, executing it now');
+  } finally {
+    if (!isScriptExecuted) {
+      await browser.scripting.executeScript({
+        target: { tabId: tabId },
+        files: ['content-scripts/side-panel.js'],
+      });
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+  }
+}
+
 async function handleToggleSidepanelCommand(tab: chrome.tabs.Tab) {
   if (!tab.id) {
     return true;
   }
 
+  await executeSidePanelScriptIfNotExecuted(tab.id!);
   await browser.tabs.sendMessage(tab.id!, { action: 'toggle-sidepanel' });
   return true;
 }
@@ -66,6 +87,7 @@ async function handleToggleSaveCommand(tab: chrome.tabs.Tab) {
     return true;
   }
 
+  await executeSidePanelScriptIfNotExecuted(tab.id!);
   await browser.tabs.sendMessage(tab.id!, { action: 'toggle-save-article' });
   return true;
 }
