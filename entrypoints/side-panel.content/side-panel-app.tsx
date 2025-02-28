@@ -6,6 +6,9 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import '~/assets/main.css';
 
+// Note: all styling must be in em to avoid being affected by the parent's root font size.
+// Many websites like to set the root font size to be a percentage, which messes with
+// the default tailwind sizing.
 export default function SidePanelApp() {
   const { isOpen } = useSidePanelMessage();
   const { articles } = useArticlesMessaging({ isOpen });
@@ -22,7 +25,7 @@ export default function SidePanelApp() {
     <>
       <div
         className={cn(
-          'fixed top-8 right-8 rounded-none h-[80%] flex items-start px-4 bg-background w-sm border border-solid border-muted-foreground/30 transition-all',
+          'fixed top-[2em] right-[2em] rounded-none h-[80%] flex items-start px-[1em] bg-background w-[24em] border border-solid border-muted-foreground/30 transition-all translate-x-0 duration-200',
           !isOpen && 'translate-x-1/4 opacity-0 pointer-events-none'
         )}
       >

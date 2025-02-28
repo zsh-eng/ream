@@ -39,7 +39,9 @@ export function SavedArticlesList({
   };
 
   return (
-    <div className={cn('flex flex-col gap-1 mt-4', isSidePanel && 'mt-0')}>
+    <div
+      className={cn('flex flex-col gap-[0.5em] mt-4', isSidePanel && 'mt-0')}
+    >
       {articles?.map((article) => (
         <LinkComponent
           key={article.url}
@@ -47,23 +49,32 @@ export function SavedArticlesList({
         >
           <div
             className={cn(
-              'bg-muted p-4 cursor-pointer border border-solid border-transparent',
+              'bg-muted p-[1em] cursor-pointer border border-solid border-transparent',
               'hover:border-foreground hover:scale-[101%] transition-transform'
             )}
           >
-            <div className={cn('text-xl', isSidePanel && 'text-base')}>
+            {/* We have to hard code the text sizing because the HTML parent's
+            base font size still affects the text sizing.
+            Some sites like to set font size to be a percentage, which messes with
+            the default tailwind text sizing. */}
+            <div className={cn('text-xl', isSidePanel && 'text-[1em]')}>
               {article.title}
             </div>
-            <div className='flex items-center gap-1 mb-2 mt-1'>
-              <LinkIcon className='size-3' />
-              <p className='text-xs text-muted-foreground underline line-clamp-1 overflow-ellipsis'>
+            <div className='flex items-center gap-[0.25em] mb-[0.5em] mt-[0.25em]'>
+              <LinkIcon className='size-[1em]' />
+              <p
+                className={cn(
+                  'text-xs text-muted-foreground underline line-clamp-1 overflow-ellipsis',
+                  isSidePanel && 'text-[0.75em]'
+                )}
+              >
                 {article.url}
               </p>
             </div>
             <p
               className={cn(
                 'line-clamp-3 overflow-ellipsis',
-                isSidePanel && 'line-clamp-2 text-sm'
+                isSidePanel && 'line-clamp-2 text-[0.875em]'
               )}
             >
               {article.excerpt}

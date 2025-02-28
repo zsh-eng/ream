@@ -11,9 +11,18 @@ export default defineContentScript({
       name: 'side-panel',
       position: 'inline',
       anchor: 'body',
-      onMount(container) {
+      onMount(container, shadow) {
+        const style = document.createElement('style');
+        style.textContent = `
+          :host {
+            font-size: 16px !important;
+          }
+        `;
+        shadow.appendChild(style);
+
         container.style.position = 'relative';
         container.style.zIndex = '100000';
+
         const app = document.createElement('div');
         const root = ReactDOM.createRoot(app);
 
