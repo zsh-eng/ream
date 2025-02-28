@@ -23,7 +23,7 @@ export default function SidePanelApp() {
       <div
         className={cn(
           'fixed top-8 right-8 rounded-none h-[80%] flex items-start px-4 bg-background w-sm border border-solid border-muted-foreground/30 transition-all',
-          !isOpen && 'translate-x-1/4 opacity-0'
+          !isOpen && 'translate-x-1/4 opacity-0 pointer-events-none'
         )}
       >
         <div className='flex flex-col gap-0 w-full h-full'>
