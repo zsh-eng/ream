@@ -85,7 +85,7 @@ export default defineContentScript({
   async main(ctx) {
     let ui: Awaited<ReturnType<typeof createShadowRootUi>> | undefined;
 
-    browser.runtime.onMessage.addListener((message) => {
+    browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       if (message.action === 'unmount') {
         ui?.remove();
         return;
@@ -96,7 +96,8 @@ export default defineContentScript({
         });
         return;
       } else if (message.action === 'content-script-loaded') {
-        return Promise.resolve(true);
+        sendResponse(true);
+        return;
       }
     });
   },
