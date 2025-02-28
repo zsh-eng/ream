@@ -14,11 +14,11 @@ export default defineConfig({
     },
     web_accessible_resources: [
       {
-        resources: ['content-scripts/content.js'],
+        resources: ['content-scripts/main.js'],
         matches: ['<all_urls>'],
       },
       {
-        resources: ['content-scripts/content.css'],
+        resources: ['content-scripts/main.css'],
         matches: ['<all_urls>'],
       },
     ],

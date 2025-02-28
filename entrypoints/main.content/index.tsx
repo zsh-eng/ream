@@ -4,7 +4,7 @@ import { Readability } from '@mozilla/readability';
 import ReactDOM from 'react-dom/client';
 import { ContentScriptContext } from 'wxt/client';
 import '~/assets/main.css';
-import App from '~/entrypoints/content/App.tsx';
+import App from '@/entrypoints/main.content/App';
 import { PortalTargetContext } from '~/hooks/portal-target-context.tsx';
 
 async function createReaderUI(ctx: ContentScriptContext) {
