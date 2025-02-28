@@ -40,7 +40,7 @@ export function SavedArticlesList({
 
   return (
     <div
-      className={cn('flex flex-col gap-[0.5em] mt-4', isSidePanel && 'mt-0')}
+      className={cn('flex flex-col gap-[0.5em] mt-4', isSidePanel && 'mt-0 pt-[0.25em] pb-[1em] overflow-y-auto px-[0.5em] -mx-[0.5em]')}
     >
       {articles?.map((article) => (
         <LinkComponent
@@ -61,7 +61,7 @@ export function SavedArticlesList({
               {article.title}
             </div>
             <div className='flex items-center gap-[0.25em] mb-[0.5em] mt-[0.25em]'>
-              <LinkIcon className='size-[1em]' />
+              <LinkIcon className='size-[.75em]' />
               <p
                 className={cn(
                   'text-xs text-muted-foreground underline line-clamp-1 overflow-ellipsis',
