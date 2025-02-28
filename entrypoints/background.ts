@@ -123,7 +123,7 @@ export default defineBackground(() => {
     browser.tabs.create({ url: savedArticleURL });
   });
 
-  browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     handleBookmarkMessage(message, sendResponse);
     // keep the message port open as we're doing this async
     return true;
