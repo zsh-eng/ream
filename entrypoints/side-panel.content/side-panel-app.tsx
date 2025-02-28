@@ -26,7 +26,7 @@ export default function SidePanelApp() {
     <>
       <div
         className={cn(
-          'fixed top-[2em] right-[2em] rounded-none h-[80%] flex items-start px-[1em] bg-background w-[24em] border border-solid border-muted-foreground/30 transition-all translate-x-0 duration-200',
+          'fixed top-[2em] right-[2em] rounded-none h-[80%] flex items-start px-[1em] bg-background w-[24em] border border-solid border-muted-foreground/30 transition-all translate-x-0% duration-200 translate-y-0',
           !isOpen && 'translate-x-1/4 opacity-0 pointer-events-none'
         )}
       >
